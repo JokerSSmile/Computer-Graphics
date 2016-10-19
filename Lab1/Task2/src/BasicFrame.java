@@ -7,5 +7,9 @@ public class BasicFrame {
     public static void main(String[] args) {
 
         Frame frame = new Frame(WINDOW_WIDTH, WINDOW_HEIGHT, "Smeshariki");
+        while (frame.isAlive) {
+
+            frame.repaint();
+        }
     }
 }

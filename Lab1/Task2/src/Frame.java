@@ -12,11 +12,12 @@ import java.util.Vector;
 public class Frame implements GLEventListener {
 
     private GLCanvas glcanvas;
-    public JFrame frame;
+    private JFrame frame;
     private GLU glu;
     private MyMouseListener mouseListener;
     private int wWidth;
     private int wHeight;
+    public boolean isAlive;
 
     private CoordinateParser coordinateParser;
 
@@ -41,24 +42,22 @@ public class Frame implements GLEventListener {
         GLProfile profile = GLProfile.get(GLProfile.GL2);
         GLCapabilities capabilities = new GLCapabilities(profile);
         mouseListener = new MyMouseListener();
-
+        glu = new GLU();
         glcanvas = new GLCanvas(capabilities);
+        isAlive = true;
 
         glcanvas.addGLEventListener(this);
         glcanvas.setSize(windowWidth, windowHeight);
-        glcanvas.addGLEventListener(this);
+        glcanvas.addMouseMotionListener(mouseListener);
         glcanvas.addMouseListener(mouseListener);
         glcanvas.setDefaultCloseOperation(WindowClosingProtocol.WindowClosingMode.DISPOSE_ON_CLOSE);
 
         frame = new JFrame (title);
-
         frame.getContentPane().add(glcanvas);
         frame.setSize(frame.getContentPane().getPreferredSize());
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE );
-        //frame.setResizable(false);
         frame.setVisible(true);
 
-        glu = new GLU();
     }
 
     @Override
@@ -86,6 +85,7 @@ public class Frame implements GLEventListener {
     @Override
     public void dispose(GLAutoDrawable drawable) {
 
+        isAlive = false;
         glcanvas.disposeGLEventListener(this, true);
         frame.dispose();
     }
@@ -93,11 +93,10 @@ public class Frame implements GLEventListener {
     @Override
     public void display(GLAutoDrawable drawable) {
 
-        System.out.println("DRAWING");
-        DragNDrop(drawable);
-
         final GL2 gl2 = drawable.getGL().getGL2();
 
+        gl2.glClearColor(0, 0, 0, 0);
+        gl2.glClear(GL.GL_COLOR_BUFFER_BIT);
         coordinateParser.Draw(gl2, body, new ColorVec(0.28f, 0.85f, 0.93f));
         coordinateParser.Draw(gl2, leftArm, new ColorVec(0.28f, 0.85f, 0.93f));
         coordinateParser.Draw(gl2, rightArm, new ColorVec(0.28f, 0.85f, 0.93f));
@@ -113,6 +112,8 @@ public class Frame implements GLEventListener {
         coordinateParser.Draw(gl2, rightPupil, new ColorVec(0, 0, 0));
         coordinateParser.Draw(gl2, nose, new ColorVec(0.6f, 0, 0));
         coordinateParser.DrawLines(gl2, mouth);
+
+        DragNDrop(gl2);
     }
 
     @Override
@@ -122,22 +123,20 @@ public class Frame implements GLEventListener {
         wHeight = height;
     }
 
-    private void DragNDrop(GLAutoDrawable drawable){
+    private void DragNDrop(GL2 gl2){
 
-        final GL2 gl2 = drawable.getGL().getGL2();
         gl2.glMatrixMode( GL2.GL_PROJECTION );
         gl2.glLoadIdentity();
         glu.gluOrtho2D( -wWidth/2, wWidth/2, wHeight/2, -wHeight/2);
         gl2.glMatrixMode( GL2.GL_MODELVIEW );
         gl2.glLoadIdentity();
-        gl2.glTranslatef(-mouseListener.deltaX, -mouseListener.deltaY, 0);
-        gl2.glViewport( -100, 100, wWidth, wHeight );
-
-        //System.out.println(-mouseListener.deltaX + " " + -mouseListener.deltaY);
+        gl2.glTranslatef(mouseListener.getDeltaX(), mouseListener.getDeltaY(), 0);
+        gl2.glViewport( 0, 0, wWidth, wHeight );
+        gl2.glFlush();
     }
 
-    private void draw()
-    {
+    public void repaint() {
 
+        glcanvas.repaint();
     }
 }
