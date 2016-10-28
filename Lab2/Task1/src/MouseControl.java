@@ -45,8 +45,6 @@ public class MouseControl implements MouseMotionListener, MouseListener {
 
         deltaX = e.getX() - startX;
         deltaY = e.getY() - startY;
-
-        System.out.println(deltaX);
     }
 
     @Override

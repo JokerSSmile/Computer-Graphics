@@ -9,10 +9,10 @@ import java.awt.event.WindowEvent;
 public class Main {
 
     // Define constants for the top-level container
-    private static String TITLE = "JOGL 2.0 Setup (GLCanvas)";  // window's title
-    private static final int CANVAS_WIDTH = 800;  // width of the drawable
-    private static final int CANVAS_HEIGHT = 600; // height of the drawable
-    private static final int FPS = 60; // animator's target frames per second
+    private static String TITLE = "JOGL 2.0 Setup (GLCanvas)";   // window's title
+    private static final int CANVAS_WIDTH = 800;                 // width of the drawable
+    private static final int CANVAS_HEIGHT = 600;                // height of the drawable
+    private static final int FPS = 60;                            // animator's target frames per second
 
     public static void main(String argc[]) {
         // Run the GUI codes in the event-dispatching thread for thread safety
@@ -38,7 +38,9 @@ public class Main {
                         new Thread() {
                             @Override
                             public void run() {
-                                if (animator.isStarted()) animator.stop();
+                                if (animator.isStarted()) {
+                                    animator.stop();
+                                }
                                 System.exit(0);
                             }
                         }.start();
