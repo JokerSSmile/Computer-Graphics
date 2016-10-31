@@ -54,7 +54,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
             height = 1;                            // prevent divide by zero
         }
 
-        final float fieldOfView = 45.f;
+        final float fieldOfView = 60.f;
         final float aspect = (float)width / height;
         final float zNear = 0.1f;
         final float zFar = 100.f;
@@ -82,16 +82,16 @@ public class Canvas extends GLCanvas implements GLEventListener {
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);  // clear color and depth buffers
         gl.glLoadIdentity();                                            // reset the model-view matrix
 
-        // ----- Your OpenGL rendering code here (Render a white triangle for testing) -----
-
+        // ----- OpenGL rendering code -----
         gl.glTranslatef(0.0f, 0.0f, -10.0f);                            // translate into the screen
         gl.glRotatef(mouseListener.getDeltaX(), 0.0f, 1.0f, 0.0f);
         gl.glRotatef(mouseListener.getDeltaY(), 1.0f, 0.0f, 0.0f);
 
 
         // ----- Drawing shape -----
-
-        pentakisDodecahedron.draw(gl);
+        enableBlending(gl);
+        pentakisDodecahedron.drawDodecahedron(gl);
+        disableBlending(gl);
     }
 
     @Override
@@ -99,64 +99,49 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
     private void initGLContext(GL2 gl){
 
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);                        // set background (clear) color
-        gl.glClearDepth(1.0f);                                          // set clear depth value to farthest
-        gl.glEnable(GL2.GL_DEPTH_TEST);                                 // enables depth testing
-        gl.glDepthFunc(GL2.GL_LEQUAL);                                  // the type of depth test to do
-        gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);   // best perspective correction
-        gl.glShadeModel(GL2.GL_SMOOTH);                                 // blends colors nicely, and smoothes out lighting
+        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);                            // set background (clear) color
+        gl.glClearDepth(1.0f);                                              // set clear depth value to farthest
+        gl.glEnable(GL2.GL_DEPTH_TEST);                                     // enables depth testing
+        //gl.glDepthFunc(GL2.GL_LEQUAL);                                    // the type of depth test to do
+        //gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);     // best perspective correction
+        //gl.glShadeModel(GL2.GL_SMOOTH);                                   // blends colors nicely, and smoothes out lighting
 
+        gl.glEnable(GL2.GL_CCW);
+        gl.glEnable(GL2.GL_BACK);
         gl.glEnable(GL2.GL_CULL_FACE);
-        gl.glEnable(GL2.GL_ALPHA_TEST);
-        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+    }
 
-        // включаем систему освещения
+    private void initLight(GL2 gl){
+
+        final float[] materialSpecular = { 1, 1, 1, 1 };
+        final float[] materialShininess = { 50.f };
+        final float[] lightPosition = { 1, 1, 1, 0 };
+
+        gl.glClearColor(0, 0, 0, 0);
+        gl.glEnable(GL2.GL_LIGHT0);
+        gl.glEnable(GL2.GL_NORMALIZE);
+        //gl.glEnable(GL2.GL_LIGHT1);
         gl.glEnable(GL2.GL_LIGHTING);
 
         // включаем применение цветов вершин как цвета материала.
         gl.glEnable(GL2.GL_COLOR_MATERIAL);
         gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
 
-
-        gl.glEnable(GL2.GL_BLEND);
-        //gl.glFrontFace(GL2.GL_CCW);
-        //gl.glCullFace(GL2.GL_BACK);
-        //gl.glEnable(GL2.GL_LIGHT0);
-        //gl.glEnable(GL2.GL_LIGHT1);
-        gl.glEnable(GL2.GL_NORMALIZE);
+        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, FloatBuffer.wrap(materialSpecular));
+        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SHININESS, FloatBuffer.wrap(materialShininess));
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, FloatBuffer.wrap(lightPosition));
     }
 
-    private void initLight(GL2 gl){
+    private void enableBlending(GL2 gl){
 
-        float[] noAmbient =
-                { 0.1f, 0.1f, 0.1f, 1f }; // low ambient light
-        float[] spec =
-                { 1f, 0.6f, 0f, 1f }; // low ambient light
-        float[] diffuse =
-                { 0f, 0f, 0f, 1f };
-        float[] lightPos =
-                {50005, 30000, 50000, 1};
-        // properties of the light
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, noAmbient, 0);
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, spec, 0);
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuse, 0);
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPos, 0);
+        gl.glDepthMask(false);
+        gl.glEnable(GL2.GL_BLEND);
+        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+    }
 
+    private void disableBlending(GL2 gl){
 
-        /*
-        float[] mat_specular = { 1, 1, 1, 1 };
-        float[] mat_shininess = { 50.f };
-        float[] light_position = { 1, 1, 1, 0 };
-        gl.glClearColor(0, 0, 0, 0);
-        gl.glShadeModel(GL2.GL_SMOOTH);
-
-        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, FloatBuffer.wrap(mat_specular));
-        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SHININESS, FloatBuffer.wrap(mat_shininess));
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, FloatBuffer.wrap(light_position));
-
-        gl.glEnable(GL2.GL_LIGHTING);
-        gl.glEnable(GL2.GL_LIGHT0);
-        gl.glEnable(GL2.GL_DEPTH_TEST);
-        */
+        gl.glDepthMask(true);
+        gl.glDisable(GL2.GL_BLEND);
     }
 }
