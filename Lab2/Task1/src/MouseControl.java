@@ -2,7 +2,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-public class MouseControl implements MouseMotionListener, MouseListener {
+class MouseControl implements MouseMotionListener, MouseListener {
 
     private int startX;
     private int startY;
@@ -52,12 +52,12 @@ public class MouseControl implements MouseMotionListener, MouseListener {
 
     }
 
-    public int getDeltaX() {
+    int getDeltaX() {
 
         return deltaX;
     }
 
-    public int getDeltaY() {
+    int getDeltaY() {
 
         return deltaY;
     }

@@ -3,7 +3,6 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
-import com.jogamp.opengl.util.FPSAnimator;
 
 import java.nio.FloatBuffer;
 
@@ -16,7 +15,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
     private PentakisDodecahedron pentakisDodecahedron;
 
     /** Constructor to setup the GUI for this Component */
-    public Canvas() {
+    Canvas() {
         this.addGLEventListener(this);
     }
 
@@ -89,6 +88,9 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
 
         // ----- Drawing shape -----
+
+        //TODO:???
+        //pentakisDodecahedron.drawDodecahedron(gl);
         enableBlending(gl);
         pentakisDodecahedron.drawDodecahedron(gl);
         disableBlending(gl);
@@ -99,8 +101,8 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
     private void initGLContext(GL2 gl){
 
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);                            // set background (clear) color
-        gl.glClearDepth(1.0f);                                              // set clear depth value to farthest
+        gl.glClearColor(0f, 0f, 0f, 0f);                                    // set background (clear) color to black
+        gl.glClearDepth(1f);                                                // set clear depth value to farthest
         gl.glEnable(GL2.GL_DEPTH_TEST);                                     // enables depth testing
         //gl.glDepthFunc(GL2.GL_LEQUAL);                                    // the type of depth test to do
         //gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);     // best perspective correction
@@ -113,23 +115,23 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
     private void initLight(GL2 gl){
 
-        final float[] materialSpecular = { 1, 1, 1, 1 };
-        final float[] materialShininess = { 50.f };
-        final float[] lightPosition = { 1, 1, 1, 0 };
-
-        gl.glClearColor(0, 0, 0, 0);
         gl.glEnable(GL2.GL_LIGHT0);
         gl.glEnable(GL2.GL_NORMALIZE);
-        //gl.glEnable(GL2.GL_LIGHT1);
         gl.glEnable(GL2.GL_LIGHTING);
 
         // включаем применение цветов вершин как цвета материала.
         gl.glEnable(GL2.GL_COLOR_MATERIAL);
         gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
 
-        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, FloatBuffer.wrap(materialSpecular));
-        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SHININESS, FloatBuffer.wrap(materialShininess));
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, FloatBuffer.wrap(lightPosition));
+        final float[] AMBIENT = { 0.1f, 0.1f, 0.1f, 0.1f }; //0.1 * white
+        final float[] DIFFUSE = { 1, 1, 1, 1 };             //white
+        final float[] SPECULAR = { 1, 1, 1, 1 };            //white
+        final float[] LIGHT_POSITION = {-1.f, 0.2f, 0.7f};
+
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, AMBIENT, 0);
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, DIFFUSE, 0);
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, SPECULAR, 0);
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, LIGHT_POSITION, 0);
     }
 
     private void enableBlending(GL2 gl){
