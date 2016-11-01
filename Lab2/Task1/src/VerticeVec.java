@@ -6,24 +6,14 @@ class VerticeVec {
     int x;
     int y;
     int z;
-    private Vec4f color;
+    Vec4f color;
 
-    VerticeVec(int x, int y, int z){
-
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    VerticeVec(int x, int y, int z, float r, float g, float b, float a){
+    VerticeVec(int x, int y, int z, Vec4f color){
 
         this.x = x;
         this.y = y;
         this.z = z;
-        color.x = r;
-        color.y = g;
-        color.z = b;
-        color.w = a;
+        this.color = color;
     }
 
     static Vec3f normalize(Vec3f v) {
@@ -47,5 +37,5 @@ class VerticeVec {
                 v1.z - v2.z
         );
     }
-};
+}
 

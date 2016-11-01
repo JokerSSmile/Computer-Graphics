@@ -88,12 +88,10 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
 
         // ----- Drawing shape -----
-
-        //TODO:???
-        //pentakisDodecahedron.drawDodecahedron(gl);
         enableBlending(gl);
         pentakisDodecahedron.drawDodecahedron(gl);
         disableBlending(gl);
+        pentakisDodecahedron.drawVerticies(gl);
     }
 
     @Override
