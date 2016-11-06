@@ -1,8 +1,11 @@
+import com.jogamp.common.util.Function;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
+import com.sun.javafx.geom.Vec2f;
+import com.sun.javafx.geom.Vec3f;
 
 @SuppressWarnings("serial")
 public class Canvas extends GLCanvas implements GLEventListener {
@@ -10,6 +13,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
     // Setup OpenGL Graphics Renderer
     private GLU glu;                                                    // for the GL Utility
     private MouseControl mouseListener;
+    private DottedMoebiusStrip dottedMoebiusStrip;
 
     /** Constructor to setup the GUI for this Component */
     Canvas() {
@@ -27,13 +31,15 @@ public class Canvas extends GLCanvas implements GLEventListener {
         glu = new GLU();                                                // get GL Utilities
 
         // ----- Your OpenGL initialization code here -----
-
+        dottedMoebiusStrip = new DottedMoebiusStrip(getMoebiusPoint);
         mouseListener = new MouseControl();
         this.addMouseMotionListener(mouseListener);
         this.addMouseListener(mouseListener);
 
         initLight(gl);
         initGLContext(gl);
+
+        dottedMoebiusStrip.tesselate(new Vec2f(-10.f, 10.f), new Vec2f(-10.f, 10.f), 0.5f);
     }
 
     /**
@@ -49,10 +55,10 @@ public class Canvas extends GLCanvas implements GLEventListener {
             height = 1;                            // prevent divide by zero
         }
 
-        final float fieldOfView = 60.f;
-        final float aspect = (float)width / height;
-        final float zNear = 0.1f;
-        final float zFar = 100.f;
+        final float FIELD_OF_VIEW = 25.f;
+        final float ASPECT = (float)width / height;
+        final float Z_NEAR = 0.1f;
+        final float Z_FAR = 100.f;
 
         // Set the view port (display area) to cover the entire window
         gl.glViewport(0, 0, width, height);
@@ -60,7 +66,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
         // Setup perspective projection, with aspect ratio matches viewport
         gl.glMatrixMode(GL2.GL_PROJECTION);                     // choose projection matrix
         gl.glLoadIdentity();                                    // reset projection matrix
-        glu.gluPerspective(fieldOfView, aspect, zNear, zFar);           // fovy, aspect, zNear, zFar
+        glu.gluPerspective(FIELD_OF_VIEW, ASPECT, Z_NEAR, Z_FAR);           // fovy, aspect, zNear, zFar
 
         // Enable the model-view transform
         gl.glMatrixMode(GL2.GL_MODELVIEW);
@@ -84,6 +90,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
 
         // ----- Drawing shape -----
+        dottedMoebiusStrip.draw(drawable);
     }
 
     @Override
@@ -94,9 +101,6 @@ public class Canvas extends GLCanvas implements GLEventListener {
         gl.glClearColor(0f, 0f, 0f, 0f);                                    // set background (clear) color to black
         gl.glClearDepth(1f);                                                // set clear depth value to farthest
         gl.glEnable(GL2.GL_DEPTH_TEST);                                     // enables depth testing
-        //gl.glDepthFunc(GL2.GL_LEQUAL);                                    // the type of depth test to do
-        //gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);     // best perspective correction
-        //gl.glShadeModel(GL2.GL_SMOOTH);                                   // blends colors nicely, and smoothes out lighting
 
         gl.glEnable(GL2.GL_CCW);
         gl.glEnable(GL2.GL_BACK);
@@ -105,13 +109,14 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
     private void initLight(GL2 gl){
 
-        gl.glEnable(GL2.GL_LIGHT0);
-        gl.glEnable(GL2.GL_NORMALIZE);
+        //gl.glEnable(GL2.GL_LIGHT0);
+        //gl.glEnable(GL2.GL_NORMALIZE);
         gl.glEnable(GL2.GL_LIGHTING);
 
         // включаем применение цветов вершин как цвета материала.
         gl.glEnable(GL2.GL_COLOR_MATERIAL);
         gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
+        gl.glLightModeli( GL2.GL_LIGHT_MODEL_TWO_SIDE, GL2.GL_TRUE );
 
         final float[] AMBIENT = { 0.1f, 0.1f, 0.1f, 0.1f }; //0.1 * white
         final float[] DIFFUSE = { 1, 1, 1, 1 };             //white
@@ -124,16 +129,24 @@ public class Canvas extends GLCanvas implements GLEventListener {
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, LIGHT_POSITION, 0);
     }
 
-    private void enableBlending(GL2 gl){
+     private Vec3f getPoint(float u, float v){
 
-        gl.glDepthMask(false);
-        gl.glEnable(GL2.GL_BLEND);
-        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+         float x = (1 + v / 2 * (float)Math.cos(u / 2)) * (float)Math.cos(u);
+         float y = (1 + v / 2 * (float)Math.cos(u / 2)) * (float)Math.sin(u);
+         float z = v / 2 * (float)Math.sin(u / 2);
+
+         return new Vec3f(x, y, z);
     }
 
-    private void disableBlending(GL2 gl){
+    private Function<Vec3f, Float> getMoebiusPoint = new Function<Vec3f, Float>() {
 
-        gl.glDepthMask(true);
-        gl.glDisable(GL2.GL_BLEND);
-    }
+        @Override
+        public Vec3f eval(Float... floats) {
+
+            Vec3f a = getPoint(floats[0], floats[1]);
+            System.out.println(a.x + " " + a.y + " " + a.z + "-------------------");
+            return a;
+        }
+    };
+
 }
