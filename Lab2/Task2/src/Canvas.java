@@ -13,7 +13,8 @@ public class Canvas extends GLCanvas implements GLEventListener {
     // Setup OpenGL Graphics Renderer
     private GLU glu;                                                    // for the GL Utility
     private MouseControl mouseListener;
-    private DottedMoebiusStrip dottedMoebiusStrip;
+    //private DottedMoebiusStrip dottedMoebiusStrip;
+    private SolidMoebiusStrip solidMoebiusStrip;
 
     /** Constructor to setup the GUI for this Component */
     Canvas() {
@@ -31,7 +32,8 @@ public class Canvas extends GLCanvas implements GLEventListener {
         glu = new GLU();                                                // get GL Utilities
 
         // ----- Your OpenGL initialization code here -----
-        dottedMoebiusStrip = new DottedMoebiusStrip(getMoebiusPoint);
+        //dottedMoebiusStrip = new DottedMoebiusStrip(getMoebiusPoint);
+        solidMoebiusStrip = new SolidMoebiusStrip(getMoebiusPoint);
         mouseListener = new MouseControl();
         this.addMouseMotionListener(mouseListener);
         this.addMouseListener(mouseListener);
@@ -39,7 +41,8 @@ public class Canvas extends GLCanvas implements GLEventListener {
         initLight(gl);
         initGLContext(gl);
 
-        dottedMoebiusStrip.tesselate(new Vec2f(-10.f, 10.f), new Vec2f(-10.f, 10.f), 0.5f);
+        //dottedMoebiusStrip.tesselate(new Vec2f(-10.f, 10.f), new Vec2f(-10.f, 10.f), 0.5f);
+        solidMoebiusStrip.tesselate(new Vec2f(-10.f, 10.f), new Vec2f(-10.f, 10.f), 0.5f);
     }
 
     /**
@@ -55,7 +58,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
             height = 1;                            // prevent divide by zero
         }
 
-        final float FIELD_OF_VIEW = 25.f;
+        final float FIELD_OF_VIEW = 35.f;
         final float ASPECT = (float)width / height;
         final float Z_NEAR = 0.1f;
         final float Z_FAR = 100.f;
@@ -90,7 +93,8 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
 
         // ----- Drawing shape -----
-        dottedMoebiusStrip.draw(drawable);
+        //dottedMoebiusStrip.draw(drawable);
+        solidMoebiusStrip.draw(drawable);
     }
 
     @Override
@@ -131,11 +135,29 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
      private Vec3f getPoint(float u, float v){
 
-         float x = (1 + v / 2 * (float)Math.cos(u / 2)) * (float)Math.cos(u);
-         float y = (1 + v / 2 * (float)Math.cos(u / 2)) * (float)Math.sin(u);
-         float z = v / 2 * (float)Math.sin(u / 2);
+         //float x = (1 + v / 2 * (float)Math.cos(u / 2)) * (float)Math.cos(u);
+         //float y = (1 + v / 2 * (float)Math.cos(u / 2)) * (float)Math.sin(u);
+         //float z = v / 2 * (float)Math.sin(u / 2);
 
-         return new Vec3f(x, y, z);
+         final float r = 1.5f;
+
+         float x;
+         float y;
+         float z;
+
+         if (u >= 0 && u <= Math.PI) {
+             x = 6 * (float) Math.cos(u) * (1 + (float) Math.sin(u)) + 4 * r * (1 - (float) Math.cos(u) / 2) * (float) Math.cos(u) * (float) Math.cos(v);
+             y = 16 * (float) Math.sin(u) + 4 * r * (1 - (float) Math.cos(u) / 2) * (float) Math.sin(u) * (float) Math.cos(v);
+             z = 4 * r * (1 - (float) Math.cos(u) / 2) * (float) Math.sin(v);
+         }
+         else{
+
+             x = 6 * (float) Math.cos(u) * (1 + (float) Math.sin(u)) - 4 * r * (1 - (float) Math.cos(u) / 2) * (float) Math.cos(v);
+             y = 16 * (float) Math.sin(u);
+             z = 4 * r * (1 - (float) Math.cos(u) / 2) * (float) Math.sin(v);
+         }
+
+         return new Vec3f(x / 10, z / 10, y / 10);
     }
 
     private Function<Vec3f, Float> getMoebiusPoint = new Function<Vec3f, Float>() {
@@ -143,9 +165,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
         @Override
         public Vec3f eval(Float... floats) {
 
-            Vec3f a = getPoint(floats[0], floats[1]);
-            System.out.println(a.x + " " + a.y + " " + a.z + "-------------------");
-            return a;
+            return getPoint(floats[0], floats[1]);
         }
     };
 
