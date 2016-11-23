@@ -1,4 +1,8 @@
 import com.sun.javafx.geom.Vec3f;
+import com.sun.javafx.geom.Vec4f;
+import com.sun.prism.impl.BufferUtil;
+
+import java.nio.FloatBuffer;
 
 class SVertexP3N{
 
@@ -26,5 +30,24 @@ class MathVec3f {
                 (v1.z * v2.x) - (v1.x * v2.z),
                 (v1.x * v2.y) - (v1.y * v2.x)
         );
+    }
+
+    static Vec3f divideByInt(Vec3f v, int divider){
+
+        return new Vec3f(v.x / divider, v.y / divider, v.z / divider);
+    }
+}
+
+class MathVec4f {
+
+    static FloatBuffer toBuffer(Vec4f v){
+
+        FloatBuffer buffer = BufferUtil.newFloatBuffer(4);
+        buffer.put(v.x);
+        buffer.put(v.y);
+        buffer.put(v.z);
+        buffer.put(v.w);
+
+        return buffer;
     }
 }
