@@ -4,23 +4,21 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
 
+import java.io.File;
+import java.util.Scanner;
+
 @SuppressWarnings("serial")
 public class Canvas extends GLCanvas implements GLEventListener {
 
     // Setup OpenGL Graphics Renderer
-    private GLU glu;                                                    // for the GL Utility
-    //private MouseControl mouseListener;
-    //private PentakisDodecahedron pentakisDodecahedron;
+    private GLU glu;
+    private ShaderProgram shaderProgram;
 
     /** Constructor to setup the GUI for this Component */
     Canvas() {
         this.addGLEventListener(this);
     }
 
-    /**
-     * Called back immediately after the OpenGL context is initialized. Can be used
-     * to perform one-time initialization. Run only once.
-     */
     @Override
     public void init(GLAutoDrawable drawable) {
 
@@ -29,19 +27,11 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
         // ----- Your OpenGL initialization code here -----
 
-        //mouseListener = new MouseControl();
-        //this.addMouseMotionListener(mouseListener);
-        //this.addMouseListener(mouseListener);
-        //pentakisDodecahedron = new PentakisDodecahedron();
-
         initLight(gl);
         initGLContext(gl);
+        initShaderProgram(gl);
     }
 
-    /**
-     * Call-back handler for window re-size event. Also called when the drawable is
-     * first set to visible.
-     */
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
@@ -81,15 +71,11 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
         // ----- OpenGL rendering code -----
         gl.glTranslatef(0.0f, 0.0f, -10.0f);                            // translate into the screen
-        //gl.glRotatef(mouseListener.getDeltaX(), 0.0f, 1.0f, 0.0f);
-        //gl.glRotatef(mouseListener.getDeltaY(), 1.0f, 0.0f, 0.0f);
 
 
         // ----- Drawing shape -----
-        //enableBlending(gl);
-        //pentakisDodecahedron.drawDodecahedron(gl);
-        //disableBlending(gl);
-        //pentakisDodecahedron.drawVerticies(gl);
+        //shaderProgram.use(gl);
+
     }
 
     @Override
@@ -130,16 +116,20 @@ public class Canvas extends GLCanvas implements GLEventListener {
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, LIGHT_POSITION, 0);
     }
 
-    private void enableBlending(GL2 gl){
+    private void initShaderProgram(GL2 gl){
 
-        gl.glDepthMask(false);
-        gl.glEnable(GL2.GL_BLEND);
-        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+        String source = null;
+        try {
+             source = new Scanner(new File("src/source/glslFunction.vert")).useDelimiter("\\Z").next();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        shaderProgram = new ShaderProgram(gl);
+        shaderProgram.compileShader(gl, source, ShaderType.Vertex);
+        shaderProgram.link(gl);
     }
 
-    private void disableBlending(GL2 gl){
 
-        gl.glDepthMask(true);
-        gl.glDisable(GL2.GL_BLEND);
-    }
 }

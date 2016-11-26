@@ -11,6 +11,7 @@ public class ShaderProgram {
 
 	ShaderProgram(GL2 gl){
 
+		shaders = new Vector<>();
 		programId = gl.glCreateProgram();
 	}
 
@@ -36,8 +37,10 @@ public class ShaderProgram {
 		final IntBuffer pSourceLengths = BufferUtil.newIntBuffer(1);
 		pSourceLengths.put(source.length());
 
+
 		ShaderRaii shader = new ShaderRaii(gl, type);
-		gl.glShaderSource(shader.getId(), 1, pSourceLines, pSourceLengths);
+		//gl.glShaderSource(shader.getId(), 1, pSourceLines, pSourceLengths); //here err
+		gl.glShaderSource(shader.getId(), 1, pSourceLines, null);
 		gl.glCompileShader(shader.getId());
 
 		IntBuffer compileStatus = BufferUtil.newIntBuffer(1);
@@ -46,6 +49,7 @@ public class ShaderProgram {
 
 		shaders.add(shader.release());
 		gl.glAttachShader(programId, shaders.lastElement());
+
 	}
 
 	void link(GL2 gl){
