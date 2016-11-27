@@ -6,13 +6,15 @@ class VerticeVec {
     int x;
     int y;
     int z;
+    int w;
     Vec4f color;
 
-    VerticeVec(int x, int y, int z, Vec4f color){
+    VerticeVec(int x, int y, int z, int w, Vec4f color){
 
         this.x = x;
         this.y = y;
         this.z = z;
+        this.w = w;
         this.color = color;
     }
 

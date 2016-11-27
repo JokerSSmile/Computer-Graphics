@@ -92,6 +92,8 @@ public class Canvas extends GLCanvas implements GLEventListener {
         pentakisDodecahedron.drawDodecahedron(gl);
         disableBlending(gl);
         pentakisDodecahedron.drawVerticies(gl);
+
+        System.out.println(PentakisDodecahedron.setColor().x + " " + PentakisDodecahedron.setColor().y + " " + PentakisDodecahedron.setColor().z);
     }
 
     @Override

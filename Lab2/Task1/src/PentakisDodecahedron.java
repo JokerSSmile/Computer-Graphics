@@ -2,131 +2,176 @@ import com.jogamp.opengl.GL2;
 import com.sun.javafx.geom.Vec3f;
 import com.sun.javafx.geom.Vec4f;
 
+import java.util.Random;
+
 class PentakisDodecahedron {
 
-    private final static Vec4f RED = new Vec4f(1, 0, 0, 0.6f);
-    private final static Vec4f GREEN = new Vec4f(0, 1, 0, 0.6f);
-    private final static Vec4f BLUE = new Vec4f(0, 0, 1, 0.6f);
-    private final static Vec4f YELLOW = new Vec4f(1, 1, 0, 0.6f);
-    private final static Vec4f CYAN = new Vec4f(0, 1, 1, 0.6f);
-    private final static Vec4f PURPLE = new Vec4f(1, 0, 1, 0.6f);
+    //private final static Vec4f RED = new Vec4f(1, 0, 0, 0.6f);
+    //private final static Vec4f GREEN = new Vec4f(0, 1, 0, 0.6f);
+    //private final static Vec4f BLUE = new Vec4f(0, 0, 1, 0.6f);
+    //private final static Vec4f YELLOW = new Vec4f(1, 1, 0, 0.6f);
+    //private final static Vec4f CYAN = new Vec4f(0, 1, 1, 0.6f);
+    //private final static Vec4f PURPLE = new Vec4f(1, 0, 1, 0.6f);
+	//private final static Vec4f DARKSLATEBLUE = new Vec4f(0.28f, 0.24f, 0.5f, 0.6f);
 
-    private final static float C0 = 3 * ((float)Math.sqrt(5) - 1) / 4;
-    private final static float C1 =  9 * (9 + (float)Math.sqrt(5)) / 76;
-    private final static float C2 = 9 * (7 + 5 * (float)Math.sqrt(5)) / 76;
-    private final static float C3 = 3 * (1 + (float)Math.sqrt(5)) / 4;
+	static Vec4f setColor(){
+
+		Random random = new Random();
+		return new Vec4f(random.nextFloat(), random.nextFloat(), random.nextFloat(), 0.6f);
+	}
+
+    //Дельтоидальный гексеконтаэдр
+    private final static float C0 = (5 - (float)Math.sqrt(5)) / 4;
+    private final static float C1 = (15 + (float)Math.sqrt(5)) / 22;
+    private final static float C2 = (float)Math.sqrt(5) / 2;
+    private final static float C3 = (5 + (float)Math.sqrt(5)) / 6;
+    private final static float C4 = (5 + 4 * (float)Math.sqrt(5)) / 11;
+    private final static float C5 = (5 + (float)Math.sqrt(5)) / 4;
+    private final static float C6 = (5 + 3 * (float)Math.sqrt(5)) / 6;
+    private final static float C7 = (25 + 9 * (float)Math.sqrt(5)) / 22;
+    private final static float C8 = (float)Math.sqrt(5);
 
     private final static Vec3f[] DODECAHEDRON_VERTICIES = {
 
-            new Vec3f(0,   C0,   C3),
-            new Vec3f(0,   C0,  -C3),
-            new Vec3f(0,  -C0,   C3),
-            new Vec3f(0,  -C0,   -C3),
-            new Vec3f( C3,  0,   C0),
-            new Vec3f( C3,  0,  -C0),
-            new Vec3f(-C3,  0,   C0),
-            new Vec3f(-C3,  0,  -C0),
-            new Vec3f( C0,   C3,  0),
-            new Vec3f( C0,  -C3,  0),
-            new Vec3f(-C0,   C3,  0),
-            new Vec3f(-C0,  -C3,  0),
-            new Vec3f( C1,  0,   C2),
-            new Vec3f( C1,  0,  -C2),
-            new Vec3f(-C1,  0,   C2),
-            new Vec3f(-C1,  0,  -C2),
-            new Vec3f( C2,   C1,  0),
-            new Vec3f( C2,  -C1,  0),
-            new Vec3f(-C2,   C1,  0),
-            new Vec3f(-C2,  -C1,  0),
-            new Vec3f(0,   C2,   C1),
-            new Vec3f(0,   C2,  -C1),
-            new Vec3f(0,  -C2,   C1),
-            new Vec3f(0,  -C2,  -C1),
-            new Vec3f( 1.5f,  1.5f,  1.5f),
-            new Vec3f( 1.5f,  1.5f, -1.5f),
-            new Vec3f( 1.5f, -1.5f,  1.5f),
-            new Vec3f( 1.5f, -1.5f, -1.5f),
-            new Vec3f(-1.5f,  1.5f,  1.5f),
-            new Vec3f(-1.5f,  1.5f, -1.5f),
-            new Vec3f(-1.5f, -1.5f,  1.5f),
-            new Vec3f(-1.5f, -1.5f, -1.5f)
+            new Vec3f(0.0f, 0.0f,  C8),
+            new Vec3f(0.0f, 0.0f, -C8),
+            new Vec3f( C8, 0.0f, 0.0f),
+            new Vec3f(-C8, 0.0f, 0.0f),
+            new Vec3f(0.0f,  C8, 0.0f),
+            new Vec3f(0.0f, -C8, 0.0f),
+            new Vec3f(0.0f,  C1,  C7),
+            new Vec3f(0.0f,  C1, -C7),
+            new Vec3f(0.0f, -C1,  C7),
+            new Vec3f(0.0f, -C1, -C7),
+            new Vec3f(C7, 0.0f,  C1),
+            new Vec3f(C7, 0.0f, -C1),
+            new Vec3f(-C7, 0.0f,  C1),
+            new Vec3f(-C7, 0.0f, -C1),
+            new Vec3f(C1,  C7, 0.0f),
+            new Vec3f(C1, -C7, 0.0f),
+            new Vec3f(-C1,  C7, 0.0f),
+            new Vec3f(-C1, -C7, 0.0f),
+            new Vec3f(C3, 0.0f,  C6),
+            new Vec3f(C3, 0.0f, -C6),
+            new Vec3f(-C3, 0.0f,  C6),
+            new Vec3f(-C3, 0.0f, -C6),
+            new Vec3f(C6,  C3, 0.0f),
+            new Vec3f(C6, -C3, 0.0f),
+            new Vec3f(-C6,  C3, 0.0f),
+            new Vec3f(-C6, -C3, 0.0f),
+            new Vec3f(0.0f,  C6,  C3),
+            new Vec3f(0.0f,  C6, -C3),
+            new Vec3f(0.0f, -C6,  C3),
+            new Vec3f(0.0f, -C6, -C3),
+            new Vec3f(C0,  C2,  C5),
+            new Vec3f(C0,  C2, -C5),
+            new Vec3f(C0, -C2,  C5),
+            new Vec3f(C0, -C2, -C5),
+            new Vec3f(-C0,  C2,  C5),
+            new Vec3f(-C0,  C2, -C5),
+            new Vec3f(-C0, -C2,  C5),
+            new Vec3f(-C0, -C2, -C5),
+            new Vec3f(C5,  C0,  C2),
+            new Vec3f(C5,  C0, -C2),
+            new Vec3f(C5, -C0,  C2),
+            new Vec3f(C5, -C0, -C2),
+            new Vec3f(-C5,  C0,  C2),
+            new Vec3f(-C5,  C0, -C2),
+            new Vec3f(-C5, -C0,  C2),
+            new Vec3f(-C5, -C0, -C2),
+            new Vec3f(C2,  C5,  C0),
+            new Vec3f(C2,  C5, -C0),
+            new Vec3f(C2, -C5,  C0),
+            new Vec3f(C2, -C5, -C0),
+            new Vec3f(-C2,  C5,  C0),
+            new Vec3f(-C2,  C5, -C0),
+            new Vec3f(-C2, -C5,  C0),
+            new Vec3f(-C2, -C5, -C0),
+            new Vec3f(C4,  C4,  C4),
+            new Vec3f(C4,  C4, -C4),
+            new Vec3f(C4, -C4,  C4),
+            new Vec3f(C4, -C4, -C4),
+            new Vec3f(-C4,  C4,  C4),
+            new Vec3f(-C4,  C4, -C4),
+            new Vec3f(-C4, -C4,  C4),
+            new Vec3f(-C4, -C4, -C4),
     };
 
     private final static VerticeVec[] DODECAHEDRON_FACES = {
 
-            new VerticeVec(12,  0,  2, RED),
-            new VerticeVec(12,  2, 26, GREEN),
-            new VerticeVec(12, 26,  4, CYAN),
-            new VerticeVec(12,  4, 24, RED),
-            new VerticeVec(12, 24,  0, YELLOW),
-            new VerticeVec(13,  3,  1, BLUE),
-            new VerticeVec(13,  1, 25, RED),
-            new VerticeVec(13, 25,  5, GREEN),
-            new VerticeVec(13,  5, 27, CYAN),
-            new VerticeVec(13, 27,  3, RED),
-            new VerticeVec(14,  2,  0, PURPLE),
-            new VerticeVec(14,  0, 28, BLUE),
-            new VerticeVec(14, 28,  6, RED),
-            new VerticeVec(14,  6, 30, GREEN),
-            new VerticeVec(14, 30,  2, CYAN),
-            new VerticeVec(15,  1,  3, RED),
-            new VerticeVec(15,  3, 31, YELLOW),
-            new VerticeVec(15, 31,  7, BLUE),
-            new VerticeVec(15,  7, 29, RED),
-            new VerticeVec(15, 29,  1, GREEN),
-            new VerticeVec(16,  4,  5, CYAN),
-            new VerticeVec(16,  5, 25, RED),
-            new VerticeVec(16, 25,  8, PURPLE),
-            new VerticeVec(16,  8, 24, BLUE),
-            new VerticeVec(16, 24,  4, RED),
-            new VerticeVec(17,  5,  4, GREEN),
-            new VerticeVec(17,  4, 26, CYAN),
-            new VerticeVec(17, 26,  9, RED),
-            new VerticeVec(17,  9, 27, YELLOW),
-            new VerticeVec(17, 27,  5, BLUE),
-            new VerticeVec(18,  7,  6, RED),
-            new VerticeVec(18,  6, 28, GREEN),
-            new VerticeVec(18, 28, 10, CYAN),
-            new VerticeVec(18, 10, 29, RED),
-            new VerticeVec(18, 29,  7, PURPLE),
-            new VerticeVec(19,  6,  7, BLUE),
-            new VerticeVec(19,  7, 31, RED),
-            new VerticeVec(19, 31, 11, GREEN),
-            new VerticeVec(19, 11, 30, CYAN),
-            new VerticeVec(19, 30,  6, RED),
-            new VerticeVec(20,  8, 10, YELLOW),
-            new VerticeVec(20, 10, 28, BLUE),
-            new VerticeVec(20, 28,  0, RED),
-            new VerticeVec(20,  0, 24, GREEN),
-            new VerticeVec(20, 24,  8, CYAN),
-            new VerticeVec(21, 10,  8, RED),
-            new VerticeVec(21,  8, 25, GREEN),
-            new VerticeVec(21, 25,  1, BLUE),
-            new VerticeVec(21,  1, 29, RED),
-            new VerticeVec(21, 29, 10, GREEN),
-            new VerticeVec(22, 11,  9, CYAN),
-            new VerticeVec(22,  9, 26, RED),
-            new VerticeVec(22, 26,  2, YELLOW),
-            new VerticeVec(22,  2, 30, BLUE),
-            new VerticeVec(22, 30, 11, RED),
-            new VerticeVec(23,  9, 11, GREEN),
-            new VerticeVec(23, 11, 31, CYAN),
-            new VerticeVec(23, 31,  3, RED),
-            new VerticeVec(23,  3, 27, PURPLE),
-            new VerticeVec(23, 27,  9, BLUE)
-
+            new VerticeVec(18,  0,  8, 32, setColor()),
+            new VerticeVec(18, 32, 56, 40, setColor()),
+            new VerticeVec(18, 40, 10, 38, setColor()),
+            new VerticeVec(18, 38, 54, 30, setColor()),
+            new VerticeVec(18, 30,  6,  0, setColor()),
+            new VerticeVec(19,  1,  7, 31, setColor()),
+            new VerticeVec(19, 31, 55, 39, setColor()),
+            new VerticeVec(19, 39, 11, 41, setColor()),
+            new VerticeVec(19, 41, 57, 33, setColor()),
+            new VerticeVec(19, 33,  9,  1, setColor()),
+            new VerticeVec(20,  0,  6, 34, setColor()),
+            new VerticeVec(20, 34, 58, 42, setColor()),
+            new VerticeVec(20, 42, 12, 44, setColor()),
+            new VerticeVec(20, 44, 60, 36, setColor()),
+            new VerticeVec(20, 36,  8,  0, setColor()),
+            new VerticeVec(21,  1,  9, 37, setColor()),
+            new VerticeVec(21, 37, 61, 45, setColor()),
+            new VerticeVec(21, 45, 13, 43, setColor()),
+            new VerticeVec(21, 43, 59, 35, setColor()),
+            new VerticeVec(21, 35,  7,  1, setColor()),
+            new VerticeVec(22,  2, 11, 39, setColor()),
+            new VerticeVec(22, 39, 55, 47, setColor()),
+            new VerticeVec(22, 47, 14, 46, setColor()),
+            new VerticeVec(22, 46, 54, 38, setColor()),
+            new VerticeVec(22, 38, 10,  2, setColor()),
+            new VerticeVec(23,  2, 10, 40, setColor()),
+            new VerticeVec(23, 40, 56, 48, setColor()),
+            new VerticeVec(23, 48, 15, 49, setColor()),
+            new VerticeVec(23, 49, 57, 41, setColor()),
+			new VerticeVec(23, 41, 11,  2, setColor()),
+			new VerticeVec(24,  3, 12, 42, setColor()),
+            new VerticeVec(24, 42, 58, 50, setColor()),
+            new VerticeVec(24, 50, 16, 51, setColor()),
+            new VerticeVec(24, 51, 59, 43, setColor()),
+            new VerticeVec(24, 43, 13,  3, setColor()),
+            new VerticeVec(25,  3, 13, 45, setColor()),
+            new VerticeVec(25, 45, 61, 53, setColor()),
+            new VerticeVec(25, 53, 17, 52, setColor()),
+            new VerticeVec(25, 52, 60, 44, setColor()),
+            new VerticeVec(25, 44, 12,  3, setColor()),
+            new VerticeVec(26,  4, 16, 50, setColor()),
+            new VerticeVec(26, 50, 58, 34, setColor()),
+            new VerticeVec(26, 34,  6, 30, setColor()),
+            new VerticeVec(26, 30, 54, 46, setColor()),
+            new VerticeVec(26, 46, 14,  4, setColor()),
+            new VerticeVec(27,  4, 14, 47, setColor()),
+            new VerticeVec(27, 47, 55, 31, setColor()),
+            new VerticeVec(27, 31,  7, 35, setColor()),
+            new VerticeVec(27, 35, 59, 51, setColor()),
+            new VerticeVec(27, 51, 16,  4, setColor()),
+            new VerticeVec(28,  5, 15, 48, setColor()),
+            new VerticeVec(28, 48, 56, 32, setColor()),
+            new VerticeVec(28, 32,  8, 36, setColor()),
+            new VerticeVec(28, 36, 60, 52, setColor()),
+            new VerticeVec(28, 52, 17,  5, setColor()),
+            new VerticeVec(29,  5, 17, 53, setColor()),
+            new VerticeVec(29, 53, 61, 37, setColor()),
+            new VerticeVec(29, 37,  9, 33, setColor()),
+            new VerticeVec(29, 33, 57, 49, setColor()),
+            new VerticeVec(29, 49, 15,  5, setColor()),
     };
 
     private void outputFaces(GL2 gl){
 
         gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
-        gl.glBegin(GL2.GL_TRIANGLES);
+        gl.glBegin(GL2.GL_QUADS);
 
         for (VerticeVec i : DODECAHEDRON_FACES) {
 
             final Vec3f vec1 = DODECAHEDRON_VERTICIES[i.x];
             final Vec3f vec2 = DODECAHEDRON_VERTICIES[i.y];
             final Vec3f vec3 = DODECAHEDRON_VERTICIES[i.z];
+            final Vec3f vec4 = DODECAHEDRON_VERTICIES[i.w];
 
             Vec3f normal = VerticeVec.normalize(VerticeVec.cross(VerticeVec.difference(vec2, vec1), VerticeVec.difference(vec3, vec1)));
 
@@ -135,6 +180,7 @@ class PentakisDodecahedron {
             gl.glVertex3f(vec1.x, vec1.y, vec1.z);
             gl.glVertex3f(vec2.x, vec2.y, vec2.z);
             gl.glVertex3f(vec3.x, vec3.y, vec3.z);
+            gl.glVertex3f(vec4.x, vec4.y, vec4.z);
         }
 
         gl.glEnd();
@@ -143,19 +189,20 @@ class PentakisDodecahedron {
     void drawVerticies(GL2 gl){
 
         gl.glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);
-        gl.glBegin(GL2.GL_TRIANGLES);
+        gl.glBegin(GL2.GL_QUADS);
 
         for (VerticeVec i : DODECAHEDRON_FACES) {
 
             final Vec3f vec1 = DODECAHEDRON_VERTICIES[i.x];
             final Vec3f vec2 = DODECAHEDRON_VERTICIES[i.y];
             final Vec3f vec3 = DODECAHEDRON_VERTICIES[i.z];
-
+            final Vec3f vec4 = DODECAHEDRON_VERTICIES[i.w];
 
             gl.glColor4f(0, 0, 0, 1);
             gl.glVertex3f(vec1.x, vec1.y, vec1.z);
             gl.glVertex3f(vec2.x, vec2.y, vec2.z);
             gl.glVertex3f(vec3.x, vec3.y, vec3.z);
+            gl.glVertex3f(vec4.x, vec4.y, vec4.z);
         }
 
         gl.glEnd();
