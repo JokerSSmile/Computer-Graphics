@@ -39,7 +39,6 @@ public class ShaderProgram {
 
 
 		ShaderRaii shader = new ShaderRaii(gl, type);
-		//gl.glShaderSource(shader.getId(), 1, pSourceLines, pSourceLengths); //here err
 		gl.glShaderSource(shader.getId(), 1, pSourceLines, null);
 		gl.glCompileShader(shader.getId());
 
@@ -60,14 +59,23 @@ public class ShaderProgram {
 
 		gl.glGetProgramiv(programId, GL2.GL_LINK_STATUS, linkStatus);
 
-		// Выполняем detach и delete после полного формирования программы
-		// http://gamedev.stackexchange.com/questions/47910
 		freeShaders(gl);
 	}
 
 	void use(GL2 gl){
 
 		gl.glUseProgram(programId);
+	}
+
+	final int findUniform(GL2 gl, String name) throws Exception{
+
+		int location = gl.glGetUniformLocation(programId, name);
+		if (location == -1){
+
+			throw new Exception("Wrong shader variable name: " + name);
+		}
+
+		return location;
 	}
 
 	void dispose(GL2 gl){

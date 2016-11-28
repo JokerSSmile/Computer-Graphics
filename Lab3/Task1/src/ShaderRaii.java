@@ -11,7 +11,6 @@ public class ShaderRaii {
 			case Fragment:
 				return GL2.GL_FRAGMENT_SHADER;
 		}
-		//throw new Exception();
 		return -1;
 	}
 
