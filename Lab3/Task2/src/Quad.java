@@ -2,8 +2,8 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.sun.javafx.geom.Vec2f;
 import com.sun.prism.impl.BufferUtil;
-import utils.SVertexP2T2;
-import utils.VecUtils;
+import vector.utils.SVertexP2T2;
+import vector.utils.VecUtils;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -17,12 +17,16 @@ final class FunctionUtils{
 
 		GL2 gl = drawable.getGL().getGL2();
 
+		gl.glEnableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 		gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 
-		FloatBuffer positions = fillPositionsArray(vertices);
+		FloatBuffer positions = fillPositionsBuffer(vertices);
+		FloatBuffer textures = fillTexturesBuffer(vertices);
 
 		positions.rewind();
+		textures.rewind();
 
+		gl.glTexCoordPointer(2, GL2.GL_FLOAT, 0, textures);
 		gl.glVertexPointer(2, GL2.GL_FLOAT, 0, positions);
 
 		try {
@@ -32,12 +36,13 @@ final class FunctionUtils{
 			e.printStackTrace();
 		}
 
+		gl.glDisableClientState(GL2.GL_TEXTURE_COORD_ARRAY);
 		gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 	}
 
-	private static FloatBuffer fillPositionsArray(final Vector<SVertexP2T2> vertices){
+	private static FloatBuffer fillPositionsBuffer(final Vector<SVertexP2T2> vertices){
 
-		FloatBuffer positions = BufferUtil.newFloatBuffer(vertices.size() * 3);
+		FloatBuffer positions = BufferUtil.newFloatBuffer(vertices.size() * 2);
 
 		for (SVertexP2T2 vertice : vertices) {
 
@@ -46,6 +51,19 @@ final class FunctionUtils{
 		}
 
 		return positions;
+	}
+
+	private static FloatBuffer fillTexturesBuffer(final Vector<SVertexP2T2> vertices){
+
+		FloatBuffer texCoords = BufferUtil.newFloatBuffer(vertices.size() * 2);
+
+		for (SVertexP2T2 vertice : vertices) {
+
+			texCoords.put(vertice.texCoord.x);
+			texCoords.put(vertice.texCoord.y);
+		}
+
+		return texCoords;
 	}
 }
 
@@ -70,11 +88,9 @@ class Quad {
 		indicies.rewind();
 	}
 
-
 	private void drawElements(GL2 gl){
 
-		gl.glDrawElements(GL2.GL_TRIANGLES, indicies.limit(),
-				GL2.GL_UNSIGNED_INT, indicies);
+		gl.glDrawElements(GL2.GL_TRIANGLES, indicies.limit(), GL2.GL_UNSIGNED_BYTE, indicies);
 	}
 
 	void draw(GLAutoDrawable drawable){
