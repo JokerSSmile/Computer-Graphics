@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Lab_3_2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Lab_3_2_jar</output-path>
+    <root id="archive" name="Lab_3_2.jar">
+      <element id="module-output" name="Lab_3_2" />
+      <element id="extracted-dir" path="C:/dev/JOGL/jogl_jar_win64/jogl-all.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/dev/JOGL/jogl_jar_win64/gluegen-rt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/dev/JOGL/jogl_jar_win64/jogl-all-natives-windows-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/dev/JOGL/jogl_jar_win64/gluegen-rt-natives-windows-amd64.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="C:/dev/JOGL/joml-1.9.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

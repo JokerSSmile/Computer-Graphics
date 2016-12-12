@@ -90,7 +90,7 @@ class Quad {
 
 	private void drawElements(GL2 gl){
 
-		gl.glDrawElements(GL2.GL_TRIANGLES, indicies.limit(), GL2.GL_UNSIGNED_BYTE, indicies);
+		gl.glDrawElements(GL2.GL_TRIANGLES, indicies.limit(), GL2.GL_UNSIGNED_INT, indicies);
 	}
 
 	void draw(GLAutoDrawable drawable){

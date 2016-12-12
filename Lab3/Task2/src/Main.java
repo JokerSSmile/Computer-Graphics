@@ -28,8 +28,8 @@ public class Main {
 			frame.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
-					// Use a dedicate thread to run the stop() to ensure that the
-					// animator stops before program exits.
+					//Use a dedicate thread to run the stop() to ensure that the
+					//animator stops before program exits.
 					new Thread(() -> {
 						if (animator.isStarted()) {
 							animator.stop();
