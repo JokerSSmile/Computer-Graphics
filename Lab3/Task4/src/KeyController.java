@@ -3,12 +3,8 @@ import java.awt.event.KeyListener;
 
 public class KeyController implements KeyListener {
 
-	private final static float changeRate = 1f;
+	private final static float changeRate = 0.05f;
 	private final static float changeIterationsRate = 1f;
-	private final static float scale = 0.1f
-	//private static final Vec2f size = new Vec2f(5, 5);
-	//private static final Vec2f position = new Vec2f(-2, -2);
-	//private static final int iterations = 64;
 
 	private boolean isUp;
 	private boolean isDown;
@@ -16,7 +12,6 @@ public class KeyController implements KeyListener {
 	private boolean isRight;
 	private boolean isZoomIn;
 	private boolean isZoomOut;
-
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -76,19 +71,19 @@ public class KeyController implements KeyListener {
 			values.x += changeRate * values.height;
 		}
 		else if (isZoomIn){
-			//if (values.height >= changeRate) {
-				values.height -= changeRate / 10;
-				values.width -= changeRate/ 10;
+			if (values.height >= changeRate) {
+				values.height -= changeRate;
+				values.width -= changeRate;
 				values.iterations += changeIterationsRate;
-			//}
+			}
 		}
 		else if (isZoomOut) {
-			values.height += changeRate/ 10;
-			values.width += changeRate/ 10;
+			values.height += changeRate;
+			values.width += changeRate;
 			values.iterations -= changeIterationsRate;
 		}
 
-		printInfo(values);
+		//printInfo(values);
 	}
 
 	private void printInfo(UniformValues values){
@@ -97,6 +92,5 @@ public class KeyController implements KeyListener {
 		System.out.println("x " + values.x + " y " + values.y);
 		System.out.println("w " + values.width + " h " + values.height);
 		System.out.println("i " + values.iterations);
-		//System.out.println("end-----------------------------------");
 	}
 }

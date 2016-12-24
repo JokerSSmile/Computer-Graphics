@@ -1,26 +1,67 @@
-uniform vec2 size;
-uniform float scale;
-uniform vec2 pos;
+uniform vec2 mandel_pos;
+uniform vec2 mandel_size;
+uniform float mandel_iterations;
 
-int x_resolution = 640, y_resolution = 2*x_resolution/3;
-int maxiteration = 256;
+float calculateMandelbrotIterations(float x, float y) {
+	float xx = 0.0;
+    float yy = 0.0;
+    float iter = 0.0;
+    float xxXxCache = 0.0;
+    float yyYyCache = 0.0;
+    while ((xxXxCache = xx * xx) + (yyYyCache=yy * yy) <= 4.0 && iter<mandel_iterations) {
+        float temp = xxXxCache - yyYyCache + x;
+        yy = 2.0*xx*yy + y;
 
-void main(void) {
-	//all of the meat of the mandelbrot set here
-	float re = 0.0, im = 0.0;
+        xx = temp;
 
-	int k;
-	for(k = 0; k < maxiteration; k++) {
-		//_re is a placeholder for when re changes
-		float _re = re;
+        iter ++;
+    }
+    return iter;
+}
 
-		//gl_FragCoord.x returns between 0 & width, etc.
-		re = re*re - im*im + (3 * gl_FragCoord.x - 2*size.x + pos.x) / (x_resolution*scale);
-		im = 2*_re*im - (2 * gl_FragCoord.y - size.y + pos.y) / (y_resolution*scale);
+const vec3 blue = vec3(1.0,0.5,1.0);
+const vec3 white = vec3(1.0,1.0,1.0);
+const vec3 yellow = vec3(1.0,0.5,0.0);
+const vec3 red = vec3(1.0,0.0,0.0);
+const float colorResolution = 16.0;
 
-		//take magnitude of re and im
-		if(re*re + im*im > 4) break;
+vec3 getColorByIndex(float index){
+	float i = mod(index,4.0);
+	if (i<0.5){
+		return blue;
 	}
+	if (i<1.5){
+		return white;
+	}
+	if (i<2.5){
+		return yellow;
+	}
+	return red;
+}
 
-	gl_FragColor = vec4(0.0, k == maxiteration ? 0.0 : float(k)/100.0 , 0.0, 1.0);
+vec4 getColor(float iterations) {
+    if (iterations == mandel_iterations){
+        return vec4(0.0,0.0,0.0,1.0);
+    }
+	float colorIndex = 0.0;
+	float iterationsFloat = iterations;
+	float colorRes = colorResolution;
+	while (iterationsFloat>colorRes){
+		iterationsFloat -= colorRes;
+		colorRes = colorRes*2.0;
+		colorIndex ++;
+	}
+	float fraction = iterationsFloat/colorRes;
+	vec3 from = getColorByIndex(colorIndex);
+	vec3 to = getColorByIndex(colorIndex+1.0);
+	vec3 res = mix(from,to,fraction);
+	return vec4(res.x,res.y,res.z,1.0);
+}
+
+void main()
+{
+	float x = mandel_pos.x + gl_TexCoord[0].x * mandel_size.x;
+	float y = mandel_pos.y + gl_TexCoord[0].y * mandel_size.y;
+	float iterations = calculateMandelbrotIterations(x,y);
+	gl_FragColor = getColor(iterations);
 }

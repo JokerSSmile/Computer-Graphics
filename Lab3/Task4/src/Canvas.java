@@ -24,6 +24,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
 	Canvas() {
 		this.addGLEventListener(this);
 		this.addKeyListener(keyController = new KeyController());
+		this.setFocusable(true);
 	}
 
 	@Override
@@ -147,23 +148,9 @@ public class Canvas extends GLCanvas implements GLEventListener {
 
 
 		try {
-			/*
-			int mandel_x = shaderProgram.findUniform(gl, "mandel_x");
-			int mandel_y = shaderProgram.findUniform(gl, "mandel_y");
-			int mandel_width = shaderProgram.findUniform(gl, "mandel_width");
-			int mandel_height = shaderProgram.findUniform(gl, "mandel_height");
+			int mandel_pos = shaderProgram.findUniform(gl, "mandel_pos");
+			int mandel_size = shaderProgram.findUniform(gl, "mandel_size");
 			int mandel_iterations = shaderProgram.findUniform(gl, "mandel_iterations");
-
-			gl.glUniform1f(mandel_x, values.x);
-			gl.glUniform1f(mandel_y, values.y);
-			gl.glUniform1f(mandel_width, values.width);
-			gl.glUniform1f(mandel_height, values.height);
-			gl.glUniform1f(mandel_iterations, values.iterations);
-			*/
-
-			int mandel_pos = shaderProgram.findUniform(gl, "pos");
-			int mandel_size = shaderProgram.findUniform(gl, "size");
-			int mandel_iterations = shaderProgram.findUniform(gl, "scale");
 
 			gl.glUniform2f(mandel_pos, values.x, values.y);
 			gl.glUniform2f(mandel_size, values.width, values.height);
