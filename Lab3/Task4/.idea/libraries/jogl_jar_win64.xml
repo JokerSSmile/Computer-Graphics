@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jogl_jar_win64">
+    <CLASSES>
+      <root url="jar://C:/dev/JOGL/joml-1.9.0.jar!/" />
+      <root url="file://C:/dev/JOGL/jogl_jar_win64" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://C:/dev/JOGL/jogl_jar_win64" recursive="false" />
+  </library>
+</component>
