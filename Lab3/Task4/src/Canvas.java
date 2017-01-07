@@ -69,6 +69,9 @@ public class Canvas extends GLCanvas implements GLEventListener {
 		shaderProgram.use(gl);
 		gl.glLoadIdentity();
 
+		//function.draw(drawable);
+
+
 		gl.glBegin(GL2.GL_QUADS);
 		{
 			gl.glTexCoord2f(0.0f, 0.0f);
@@ -82,6 +85,7 @@ public class Canvas extends GLCanvas implements GLEventListener {
 		}
 		gl.glEnd();
 		gl.glFlush();
+
 	}
 
 	@Override

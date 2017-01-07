@@ -87,16 +87,16 @@ class Quad {
 		SVertexP2T2 vRightBottom = new SVertexP2T2(new Vec2f(1, -1), new Vec2f(MAX_TEX_COORD, MAX_TEX_COORD));
 
 		vertices = new Vector<>(Arrays.asList(vLeftTop, vRightTop, vLeftBottom, vRightBottom));
-		indicies = BufferUtil.newIntBuffer(4);
-		int[] indArray = {0, 1, 2, 3};
+		indicies = BufferUtil.newIntBuffer(6);
+		int[] indArray = { 0, 1, 2, 1, 3, 2 };
 		indicies.put(indArray);
 		indicies.rewind();
 	}
 
 	private void drawElements(GL2 gl){
 
-		//gl.glDrawElements(GL2.GL_QUADS, indicies.limit(), GL2.GL_UNSIGNED_INT, indicies);
-		gl.glDrawArrays(GL2.GL_TRIANGLES, 0, 4);
+		gl.glDrawElements(GL2.GL_QUADS, indicies.limit(), GL2.GL_UNSIGNED_INT, indicies);
+		//gl.glDrawArrays(GL2.GL_QUADS, 0, 6);
 	}
 
 	void draw(GLAutoDrawable drawable){

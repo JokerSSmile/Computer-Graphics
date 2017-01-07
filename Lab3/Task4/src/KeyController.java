@@ -4,7 +4,8 @@ import java.awt.event.KeyListener;
 public class KeyController implements KeyListener {
 
 	private final static float changeRate = 0.05f;
-	private final static float changeIterationsRate = 1f;
+	private final static float zoomChangeRate = 1.2f;
+	private final static float changeIterationsRate = 5f;
 
 	private boolean isUp;
 	private boolean isDown;
@@ -71,19 +72,17 @@ public class KeyController implements KeyListener {
 			values.x += changeRate * values.height;
 		}
 		else if (isZoomIn){
-			if (values.height >= changeRate) {
-				values.height -= changeRate;
-				values.width -= changeRate;
-				values.iterations += changeIterationsRate;
-			}
+			values.height /= zoomChangeRate;
+			values.width /= zoomChangeRate;
+			values.iterations += changeIterationsRate;
 		}
-		else if (isZoomOut) {
-			values.height += changeRate;
-			values.width += changeRate;
+		else if (isZoomOut && values.height < 5) {
+			values.height *= zoomChangeRate;
+			values.width *= zoomChangeRate;
 			values.iterations -= changeIterationsRate;
 		}
 
-		//printInfo(values);
+		printInfo(values);
 	}
 
 	private void printInfo(UniformValues values){
