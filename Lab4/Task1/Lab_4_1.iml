@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-assimp.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-bgfx.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-egl.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-glfw.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-jawt.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-jemalloc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-lmdb.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nanovg.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nfd.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nuklear.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-openal.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opencl.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opengl.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opengles.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-ovr.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-par.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-sse.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-stb.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-tinyfd.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-vulkan.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-xxhash.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-assimp-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-bgfx-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-egl-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-glfw-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-jawt-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-jemalloc-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-lmdb-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nanovg-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nfd-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nuklear-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-openal-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opencl-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opengl-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opengles-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-ovr-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-par-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-sse-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-stb-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-tinyfd-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-vulkan-javadoc.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-xxhash-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-assimp-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-bgfx-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-egl-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-glfw-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-jawt-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-jemalloc-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-lmdb-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nanovg-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nfd-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-nuklear-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-openal-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opencl-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opengl-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-opengles-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-ovr-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-par-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-sse-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-stb-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-tinyfd-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-vulkan-sources.jar!/" />
+          <root url="jar://C:/dev/JOGL/LWJGL/lwjgl-xxhash-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/dev/JOGL/joml-1.9.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/dev/JOGL/PNGDecoder.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
