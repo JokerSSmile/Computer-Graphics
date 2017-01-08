@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -36,7 +37,6 @@ public class Window {
         this.vSync = vSync;
         this.resized = false;
     }
-
 
     public void init() {
         // Setup an error callback. The default implementation
