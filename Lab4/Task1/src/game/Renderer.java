@@ -15,25 +15,20 @@ import engine.graph.ShaderProgram;
 import engine.graph.SpotLight;
 import engine.graph.Transformation;
 
+import java.util.Vector;
+
 public class Renderer {
 
     /**
      * Field of View in Radians
      */
     private static final float FOV = (float) Math.toRadians(60.0f);
-
     private static final float Z_NEAR = 0.01f;
-
     private static final float Z_FAR = 1000.f;
-
     private static final int MAX_POINT_LIGHTS = 5;
-
     private static final int MAX_SPOT_LIGHTS = 5;
-
     private final Transformation transformation;
-
     private ShaderProgram shaderProgram;
-
     private final float specularPower;
 
     public Renderer() {
@@ -66,8 +61,8 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Window window, Camera camera, GameItem[] gameItems, Vector3f ambientLight,
-            PointLight[] pointLightList, SpotLight[] spotLightList, DirectionalLight directionalLight) {
+    public void render(Window window, Camera camera, Vector<GameItem> gameItems, Vector3f ambientLight,
+                       PointLight[] pointLightList, SpotLight[] spotLightList, DirectionalLight directionalLight) {
 
         clear();
 

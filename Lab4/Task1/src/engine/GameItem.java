@@ -6,22 +6,25 @@ import engine.graph.Mesh;
 public class GameItem {
 
     private final Mesh mesh;
-    
     private final Vector3f position;
-    
     private float scale;
-
     private final Vector3f rotation;
+    private final Vector3f startPosition;
 
-    public GameItem(Mesh mesh) {
+    public GameItem(Mesh mesh, Vector3f position) {
         this.mesh = mesh;
-        position = new Vector3f(0, 0, 0);
+        this.position = position;
+        this.startPosition = position;
         scale = 1;
         rotation = new Vector3f(0, 0, 0);
     }
 
     public Vector3f getPosition() {
         return position;
+    }
+
+    public Vector3f getStartPosition(){
+        return startPosition;
     }
 
     public void setPosition(float x, float y, float z) {
