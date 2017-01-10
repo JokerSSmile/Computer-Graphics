@@ -10,21 +10,13 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 public class MouseInput {
 
     private final Vector2d previousPos;
-
     private final Vector2d currentPos;
-
     private final Vector2f displVec;
-
     private boolean inWindow = false;
-
     private boolean leftButtonPressed = false;
-
     private boolean rightButtonPressed = false;
-
     private GLFWCursorPosCallback cursorPosCallback;
-    
     private GLFWCursorEnterCallback cursorEnterCallback;
-    
     private GLFWMouseButtonCallback mouseButtonCallback;
 
     public MouseInput() {

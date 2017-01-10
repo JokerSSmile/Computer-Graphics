@@ -16,7 +16,7 @@ public class ShaderProgram {
 
     private int fragmentShaderId;
 
-    private final Map<String, Integer> uniforms;
+    private final Map<String, UniformData> uniforms;
 
     public ShaderProgram() throws Exception {
         programId = glCreateProgram();
@@ -31,7 +31,7 @@ public class ShaderProgram {
         if (uniformLocation < 0) {
             throw new Exception("Could not find uniform:" + uniformName);
         }
-        uniforms.put(uniformName, uniformLocation);
+        uniforms.put(uniformName, new UniformData(uniformLocation));
     }
 
     public void createPointLightListUniform(String uniformName, int size) throws Exception {
@@ -69,27 +69,48 @@ public class ShaderProgram {
 
     public void createMaterialUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".colour");
-        createUniform(uniformName + ".useColour");
+        createUniform(uniformName + ".hasTexture");
         createUniform(uniformName + ".reflectance");
     }
 
     public void setUniform(String uniformName, Matrix4f value) {
+        UniformData uniformData = uniforms.get(uniformName);
+        if (uniformData == null) {
+            throw new RuntimeException("Uniform [" + uniformName + "] has nor been created");
+        }
+        // Check if float buffer has been created
+        FloatBuffer fb = uniformData.getFloatBuffer();
+        if (fb == null) {
+            fb = BufferUtils.createFloatBuffer(16);
+            uniformData.setFloatBuffer(fb);
+        }
         // Dump the matrix into a float buffer
-        FloatBuffer fb = BufferUtils.createFloatBuffer(16);
         value.get(fb);
-        glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
+        glUniformMatrix4fv(uniformData.getUniformLocation(), false, fb);
     }
 
     public void setUniform(String uniformName, int value) {
-        glUniform1i(uniforms.get(uniformName), value);
+        UniformData uniformData = uniforms.get(uniformName);
+        if (uniformData == null) {
+            throw new RuntimeException("Uniform [" + uniformName + "] has nor been created");
+        }
+        glUniform1i(uniformData.getUniformLocation(), value);
     }
 
     public void setUniform(String uniformName, float value) {
-        glUniform1f(uniforms.get(uniformName), value);
+        UniformData uniformData = uniforms.get(uniformName);
+        if (uniformData == null) {
+            throw new RuntimeException("Uniform [" + uniformName + "] has nor been created");
+        }
+        glUniform1f(uniformData.getUniformLocation(), value);
     }
 
     public void setUniform(String uniformName, Vector3f value) {
-        glUniform3f(uniforms.get(uniformName), value.x, value.y, value.z);
+        UniformData uniformData = uniforms.get(uniformName);
+        if (uniformData == null) {
+            throw new RuntimeException("Uniform [" + uniformName + "] has nor been created");
+        }
+        glUniform3f(uniformData.getUniformLocation(), value.x, value.y, value.z);
     }
 
     public void setUniform(String uniformName, PointLight[] pointLights) {
@@ -138,7 +159,7 @@ public class ShaderProgram {
 
     public void setUniform(String uniformName, Material material) {
         setUniform(uniformName + ".colour", material.getColour());
-        setUniform(uniformName + ".useColour", material.isTextured() ? 0 : 1);
+        setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
         setUniform(uniformName + ".reflectance", material.getReflectance());
     }
 
