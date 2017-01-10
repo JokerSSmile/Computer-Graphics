@@ -2,12 +2,13 @@ package engine.graph;
 
 import java.util.List;
 import java.util.Map;
+
+import game.Hud;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import static org.lwjgl.opengl.GL11.*;
 import engine.entity.GameItem;
-import engine.IHud;
 import engine.Scene;
 import engine.SceneLight;
 import engine.entity.SkyBox;
@@ -34,7 +35,7 @@ public class Renderer {
         specularPower = 10f;
     }
 
-    public void init(Window window) throws Exception {
+    public void init() throws Exception {
         setupSkyBoxShader();
         setupSceneShader();
         setupHudShader();
@@ -86,11 +87,11 @@ public class Renderer {
         hudShaderProgram.createUniform("hasTexture");
     }
 
-    public void clear() {
+    private void clear() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Window window, Camera camera, Scene scene, IHud hud) {
+    public void render(Window window, Camera camera, Scene scene, Hud hud) {
         clear();
 
         if (window.isResized()) {
@@ -102,14 +103,14 @@ public class Renderer {
         transformation.updateProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
         transformation.updateViewMatrix(camera);
 
-        renderScene(window, camera, scene);
+        renderScene(scene);
 
-        renderSkyBox(window, camera, scene);
+        renderSkyBox(scene);
 
         renderHud(window, hud);
     }
 
-    private void renderSkyBox(Window window, Camera camera, Scene scene) {
+    private void renderSkyBox(Scene scene) {
         skyBoxShaderProgram.bind();
 
         skyBoxShaderProgram.setUniform("texture_sampler", 0);
@@ -118,9 +119,6 @@ public class Renderer {
         skyBoxShaderProgram.setUniform("projectionMatrix", projectionMatrix);
         SkyBox skyBox = scene.getSkyBox();
         Matrix4f viewMatrix = transformation.getViewMatrix();
-        //viewMatrix.m30(0);
-        //viewMatrix.m31(0);
-        //viewMatrix.m32(0);
         Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(skyBox, viewMatrix);
         skyBoxShaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
         skyBoxShaderProgram.setUniform("ambientLight", scene.getSceneLight().getAmbientLight());
@@ -130,7 +128,7 @@ public class Renderer {
         skyBoxShaderProgram.unbind();
     }
 
-    public void renderScene(Window window, Camera camera, Scene scene) {
+    private void renderScene(Scene scene) {
         sceneShaderProgram.bind();
 
         Matrix4f projectionMatrix = transformation.getProjectionMatrix();
@@ -140,6 +138,8 @@ public class Renderer {
 
         SceneLight sceneLight = scene.getSceneLight();
         renderLights(viewMatrix, sceneLight);
+        SceneLight sceneBgLight = scene.getBackGroundLight();
+        renderLights(viewMatrix, sceneBgLight);
 
         sceneShaderProgram.setUniform("texture_sampler", 0);
         // Render each mesh with the associated game Items
@@ -169,7 +169,7 @@ public class Renderer {
         sceneShaderProgram.setUniform("directionalLight", currDirLight);
     }
 
-    private void renderHud(Window window, IHud hud) {
+    private void renderHud(Window window, Hud hud) {
         hudShaderProgram.bind();
 
         Matrix4f ortho = transformation.getOrthoProjectionMatrix(0, window.getWidth(), window.getHeight(), 0);

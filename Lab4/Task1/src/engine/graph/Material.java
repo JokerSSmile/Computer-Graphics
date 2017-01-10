@@ -12,7 +12,7 @@ public class Material {
 
     private Texture texture;
     
-    public Material() {
+    private Material() {
         colour = DEFAULT_COLOUR;
         reflectance = 0;
     }
@@ -34,7 +34,7 @@ public class Material {
         this.reflectance = reflectance;
     }
 
-    public Vector3f getColour() {
+    Vector3f getColour() {
         return colour;
     }
 
@@ -42,15 +42,11 @@ public class Material {
         this.colour = colour;
     }
 
-    public float getReflectance() {
+    float getReflectance() {
         return reflectance;
     }
 
-    public void setReflectance(float reflectance) {
-        this.reflectance = reflectance;
-    }
-
-    public boolean isTextured() {
+    boolean isTextured() {
         return this.texture != null;
     }
 

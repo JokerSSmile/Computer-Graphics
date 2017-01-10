@@ -1,15 +1,18 @@
 package game;
 
 import engine.entity.GameEngine;
-import engine.IGameLogic;
- 
+import org.joml.Vector2i;
+
 public class Main {
+
+    private static final String TITLE = "GAME";
+    private static final Vector2i WINDOW_SIZE = new Vector2i(1280, 720);
  
     public static void main(String[] args) {
         try {
             boolean vSync = true;
-            IGameLogic gameLogic = new StarWars();
-            GameEngine gameEng = new GameEngine("GAME", 1280, 720, vSync, gameLogic);
+            StarWars starWars = new StarWars();
+            GameEngine gameEng = new GameEngine(TITLE, WINDOW_SIZE.x, WINDOW_SIZE.y, vSync, starWars);
             gameEng.start();
         } catch (Exception excp) {
             excp.printStackTrace();

@@ -8,8 +8,6 @@ import engine.graph.Texture;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 
-import java.util.List;
-
 public class Bullet extends GameItem{
 
 	private static final int PLAYER_BULLET_SPEED = 40;
@@ -18,15 +16,14 @@ public class Bullet extends GameItem{
 
 	private boolean isPlayers;
 	private float distance;
-	private static Texture textureRed;
-	private static Texture textureWhite;
 
 	Bullet(Vector3f position, boolean isPlayers){
+
 		Mesh bulletMesh = null;
 		try {
 			bulletMesh = OBJLoader.loadMesh("src/resources/models/LightSaber.obj");
-			textureRed = new Texture("src/resources/textures/lightsaberRed.png");
-			textureWhite = new Texture("src/resources/textures/lightsaberLight.png");
+			Texture textureRed = new Texture("src/resources/textures/lightsaberRed.png");
+			Texture textureWhite = new Texture("src/resources/textures/lightsaberLight.png");
 			if (isPlayers){
 				bulletMesh.setMaterial(new Material(textureRed));
 			} else {

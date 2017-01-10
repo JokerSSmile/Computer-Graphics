@@ -1,9 +1,8 @@
 package engine.entity;
 
-import engine.IGameLogic;
-import engine.MouseInput;
 import engine.Timer;
 import engine.Window;
+import game.StarWars;
 
 public class GameEngine implements Runnable {
 
@@ -12,12 +11,12 @@ public class GameEngine implements Runnable {
     private final Window window;
     private final Thread gameLoopThread;
     private final Timer timer;
-    private final IGameLogic gameLogic;
+    private final StarWars starWars;
 
-    public GameEngine(String windowTitle, int width, int height, boolean vSync, IGameLogic gameLogic) throws Exception {
+    public GameEngine(String windowTitle, int width, int height, boolean vSync, StarWars starWars) throws Exception {
         gameLoopThread = new Thread(this, "GAME_LOOP_THREAD");
         window = new Window(windowTitle, width, height, vSync);
-        this.gameLogic = gameLogic;
+        this.starWars = starWars;
         timer = new Timer();
     }
 
@@ -45,7 +44,7 @@ public class GameEngine implements Runnable {
     private void init() throws Exception {
         window.init();
         timer.init();
-        gameLogic.init(window);
+        starWars.init();
     }
 
     private void gameLoop() {
@@ -53,8 +52,7 @@ public class GameEngine implements Runnable {
         float accumulator = 0f;
         float interval = 1f / TARGET_UPS;
 
-        boolean running = true;
-        while (running && !window.windowShouldClose()) {
+        while (!window.windowShouldClose()) {
             elapsedTime = timer.getElapsedTime();
             accumulator += elapsedTime;
 
@@ -74,7 +72,7 @@ public class GameEngine implements Runnable {
     }
 
     private void cleanup() {
-        gameLogic.cleanup();                
+        starWars.cleanup();
     }
     
     private void sync() {
@@ -89,19 +87,15 @@ public class GameEngine implements Runnable {
     }
 
     private void input() {
-        gameLogic.input(window);
+        starWars.input(window);
     }
 
     protected void update(float interval) {
-        gameLogic.update(interval);
+        starWars.update(interval);
     }
 
     private void render() {
-        gameLogic.render(window);
+        starWars.render(window);
         window.update();
-    }
-
-    public Window getWindow(){
-        return window;
     }
 }

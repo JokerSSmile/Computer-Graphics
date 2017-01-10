@@ -14,20 +14,16 @@ public class Texture {
 
     private final int id;
 
-    private final int width;
-
-    private final int height;
-
     public Texture(String fileName) throws Exception {
         this(Files.newInputStream(Paths.get(fileName)));
     }
 
-    public Texture(InputStream is) throws Exception {
+    Texture(InputStream is) throws Exception {
         // Load Texture file
         PNGDecoder decoder = new PNGDecoder(is);
 
-        this.width = decoder.getWidth();
-        this.height = decoder.getHeight();
+        int width = decoder.getWidth();
+        int height = decoder.getHeight();
 
         // Load texture contents into a byte buffer
         ByteBuffer buf = ByteBuffer.allocateDirect(
@@ -46,28 +42,16 @@ public class Texture {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         // Upload the texture data
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
         // Generate Mip Map
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 
-    public int getWidth() {
-        return this.width;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
-    public void bind() {
-        glBindTexture(GL_TEXTURE_2D, id);
-    }
-
-    public int getId() {
+    int getId() {
         return id;
     }
 
-    public void cleanup() {
+    void cleanup() {
         glDeleteTextures(id);
     }
 }

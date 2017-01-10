@@ -83,10 +83,6 @@ public class TextItem extends GameItem {
         mesh.setMaterial(new Material(fontTexture.getTexture()));
         return mesh;
     }
-
-    public String getText() {
-        return text;
-    }
     
     public void setText(String text) {
         this.text = text;

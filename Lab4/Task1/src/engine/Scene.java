@@ -12,9 +12,10 @@ public class Scene {
     private List<GameItem> gameItems;
     private SkyBox skyBox;
     private SceneLight sceneLight;
+    private SceneLight backgroundLight;
 
     public Scene() {
-        meshMap = new HashMap();
+        meshMap = new HashMap<>();
         gameItems = new Vector<>();
     }
     public Map<Mesh, List<GameItem>> getGameMeshes() {
@@ -35,8 +36,6 @@ public class Scene {
             List<GameItem> list = entry.getValue();
             list.removeIf(GameItem::isNeedToRemove);
         }
-
-        sceneLight.getClass();
     }
 
     public SkyBox getSkyBox() {
@@ -51,9 +50,17 @@ public class Scene {
         return sceneLight;
     }
 
+	public SceneLight getBackGroundLight() {
+		return backgroundLight;
+	}
+
     public void setSceneLight(SceneLight sceneLight) {
         this.sceneLight = sceneLight;
     }
+
+	public void setBackgroundLight(SceneLight sceneLight) {
+		this.backgroundLight = sceneLight;
+	}
 
     public List<GameItem> getGameItems() {
         return gameItems;

@@ -8,8 +8,6 @@ import engine.entity.*;
 import engine.graph.Renderer;
 import org.joml.Vector3f;
 
-import engine.IGameLogic;
-import engine.MouseInput;
 import engine.Scene;
 import engine.SceneLight;
 import engine.Window;
@@ -19,7 +17,7 @@ import engine.graph.Material;
 import engine.graph.Mesh;
 import engine.graph.OBJLoader;
 
-public class StarWars implements IGameLogic {
+public class StarWars {
 
     private final Renderer renderer;
     private final Camera camera;
@@ -28,14 +26,13 @@ public class StarWars implements IGameLogic {
     private int score;
     private boolean isGameEnd;
 
-    public StarWars() {
+    StarWars() {
         renderer = new Renderer();
         camera = new Camera();
     }
 
-    @Override
-    public void init(Window window) throws Exception {
-        renderer.init(window);
+    public void init() throws Exception {
+        renderer.init();
 
         scene = new Scene();
         
@@ -45,9 +42,6 @@ public class StarWars implements IGameLogic {
         Mesh deathStarMesh = OBJLoader.loadMesh("src/resources/models/deathstar.obj");
         Material darkMaterial = new Material(new Vector3f(0.2f, 0.2f, 0.2f), reflectance);
         tieFighterMesh.setMaterial(darkMaterial);
-        
-        float blockScale = 0.5f;
-        float extension = 2.0f;
 
         //Init Death Star
         DeathStar deathStar = new DeathStar(deathStarMesh);
@@ -70,7 +64,7 @@ public class StarWars implements IGameLogic {
         setupLights();
         
         // Create HUD
-        hud = new Hud(Integer.toString(score), "");
+        hud = new Hud(Integer.toString(score), "", "");
     }
 
     private void initializeEnemies(){
@@ -106,18 +100,22 @@ public class StarWars implements IGameLogic {
     
     private void setupLights() {
         SceneLight sceneLight = new SceneLight();
+        SceneLight bgLight = new SceneLight();
         scene.setSceneLight(sceneLight);
+        scene.setBackgroundLight(bgLight);
 
         // Ambient Light
         sceneLight.setAmbientLight(new Vector3f(1.0f, 1.0f, 1.0f));
+        bgLight.setAmbientLight(new Vector3f(1.0f, 1.0f, 1.0f));
 
         // Directional Light
         float lightIntensity = 1.0f;
-        Vector3f lightPosition = new Vector3f(-1, 0, 0);
+        Vector3f lightPosition = new Vector3f(100, 0, 0);
         sceneLight.setDirectionalLight(new DirectionalLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity));
+        Vector3f bgLightPosition = new Vector3f(-100, 100, -100);
+        bgLight.setDirectionalLight(new DirectionalLight(new Vector3f(1,  0, 0), bgLightPosition, lightIntensity));
     }
 
-    @Override
     public void input(Window window) {
 
         //Player input
@@ -130,12 +128,13 @@ public class StarWars implements IGameLogic {
         }
         if (player != null) {
             player.input(window, scene);
+            hud.setHealthText("Lifes: " + Integer.toString(player.getHealth()));
         } else {
             isGameEnd = true;
+            hud.setHealthText("");
         }
     }
 
-    @Override
     public void update(float interval) {
 
         //Update scene
@@ -191,13 +190,11 @@ public class StarWars implements IGameLogic {
         }
     }
 
-    @Override
     public void render(Window window) {
         hud.updateSize(window);
         renderer.render(window, camera, scene, hud);
     }
 
-    @Override
     public void cleanup() {
         renderer.cleanup();
         Map<Mesh, List<GameItem>> mapMeshes = scene.getGameMeshes();

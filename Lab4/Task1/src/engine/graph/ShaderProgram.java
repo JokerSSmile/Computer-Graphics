@@ -8,7 +8,7 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL20.*;
 
-public class ShaderProgram {
+class ShaderProgram {
 
     private final int programId;
 
@@ -18,7 +18,7 @@ public class ShaderProgram {
 
     private final Map<String, UniformData> uniforms;
 
-    public ShaderProgram() throws Exception {
+    ShaderProgram() throws Exception {
         programId = glCreateProgram();
         if (programId == 0) {
             throw new Exception("Could not create Shader");
@@ -26,7 +26,7 @@ public class ShaderProgram {
         uniforms = new HashMap<>();
     }
 
-    public void createUniform(String uniformName) throws Exception {
+    void createUniform(String uniformName) throws Exception {
         int uniformLocation = glGetUniformLocation(programId, uniformName);
         if (uniformLocation < 0) {
             throw new Exception("Could not find uniform:" + uniformName);
@@ -34,13 +34,13 @@ public class ShaderProgram {
         uniforms.put(uniformName, new UniformData(uniformLocation));
     }
 
-    public void createPointLightListUniform(String uniformName, int size) throws Exception {
+    void createPointLightListUniform(String uniformName, int size) throws Exception {
         for (int i = 0; i < size; i++) {
             createPointLightUniform(uniformName + "[" + i + "]");
         }
     }
 
-    public void createPointLightUniform(String uniformName) throws Exception {
+    private void createPointLightUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".colour");
         createUniform(uniformName + ".position");
         createUniform(uniformName + ".intensity");
@@ -49,31 +49,31 @@ public class ShaderProgram {
         createUniform(uniformName + ".att.exponent");
     }
 
-    public void createSpotLightListUniform(String uniformName, int size) throws Exception {
+    void createSpotLightListUniform(String uniformName, int size) throws Exception {
         for (int i = 0; i < size; i++) {
             createSpotLightUniform(uniformName + "[" + i + "]");
         }
     }
 
-    public void createSpotLightUniform(String uniformName) throws Exception {
+    private void createSpotLightUniform(String uniformName) throws Exception {
         createPointLightUniform(uniformName + ".pl");
         createUniform(uniformName + ".conedir");
         createUniform(uniformName + ".cutoff");
     }
 
-    public void createDirectionalLightUniform(String uniformName) throws Exception {
+    void createDirectionalLightUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".colour");
         createUniform(uniformName + ".direction");
         createUniform(uniformName + ".intensity");
     }
 
-    public void createMaterialUniform(String uniformName) throws Exception {
+    void createMaterialUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".colour");
         createUniform(uniformName + ".hasTexture");
         createUniform(uniformName + ".reflectance");
     }
 
-    public void setUniform(String uniformName, Matrix4f value) {
+    void setUniform(String uniformName, Matrix4f value) {
         UniformData uniformData = uniforms.get(uniformName);
         if (uniformData == null) {
             throw new RuntimeException("Uniform [" + uniformName + "] has nor been created");
@@ -89,7 +89,7 @@ public class ShaderProgram {
         glUniformMatrix4fv(uniformData.getUniformLocation(), false, fb);
     }
 
-    public void setUniform(String uniformName, int value) {
+    void setUniform(String uniformName, int value) {
         UniformData uniformData = uniforms.get(uniformName);
         if (uniformData == null) {
             throw new RuntimeException("Uniform [" + uniformName + "] has nor been created");
@@ -97,7 +97,7 @@ public class ShaderProgram {
         glUniform1i(uniformData.getUniformLocation(), value);
     }
 
-    public void setUniform(String uniformName, float value) {
+    void setUniform(String uniformName, float value) {
         UniformData uniformData = uniforms.get(uniformName);
         if (uniformData == null) {
             throw new RuntimeException("Uniform [" + uniformName + "] has nor been created");
@@ -105,7 +105,7 @@ public class ShaderProgram {
         glUniform1f(uniformData.getUniformLocation(), value);
     }
 
-    public void setUniform(String uniformName, Vector3f value) {
+    void setUniform(String uniformName, Vector3f value) {
         UniformData uniformData = uniforms.get(uniformName);
         if (uniformData == null) {
             throw new RuntimeException("Uniform [" + uniformName + "] has nor been created");
@@ -113,27 +113,27 @@ public class ShaderProgram {
         glUniform3f(uniformData.getUniformLocation(), value.x, value.y, value.z);
     }
 
-    public void setUniform(String uniformName, DirectionalLight dirLight) {
+    void setUniform(String uniformName, DirectionalLight dirLight) {
         setUniform(uniformName + ".colour", dirLight.getColor());
         setUniform(uniformName + ".direction", dirLight.getDirection());
         setUniform(uniformName + ".intensity", dirLight.getIntensity());
     }
 
-    public void setUniform(String uniformName, Material material) {
+    void setUniform(String uniformName, Material material) {
         setUniform(uniformName + ".colour", material.getColour());
         setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
         setUniform(uniformName + ".reflectance", material.getReflectance());
     }
 
-    public void createVertexShader(String shaderCode) throws Exception {
+    void createVertexShader(String shaderCode) throws Exception {
         vertexShaderId = createShader(shaderCode, GL_VERTEX_SHADER);
     }
 
-    public void createFragmentShader(String shaderCode) throws Exception {
+    void createFragmentShader(String shaderCode) throws Exception {
         fragmentShaderId = createShader(shaderCode, GL_FRAGMENT_SHADER);
     }
 
-    protected int createShader(String shaderCode, int shaderType) throws Exception {
+    private int createShader(String shaderCode, int shaderType) throws Exception {
         int shaderId = glCreateShader(shaderType);
         if (shaderId == 0) {
             throw new Exception("Error creating shader. Code: " + shaderId);
@@ -151,7 +151,7 @@ public class ShaderProgram {
         return shaderId;
     }
 
-    public void link() throws Exception {
+    void link() throws Exception {
         glLinkProgram(programId);
         if (glGetProgrami(programId, GL_LINK_STATUS) == 0) {
             throw new Exception("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));
@@ -170,15 +170,15 @@ public class ShaderProgram {
         }
     }
 
-    public void bind() {
+    void bind() {
         glUseProgram(programId);
     }
 
-    public void unbind() {
+    void unbind() {
         glUseProgram(0);
     }
 
-    public void cleanup() {
+    void cleanup() {
         unbind();
         if (programId != 0) {
             glDeleteProgram(programId);

@@ -75,4 +75,8 @@ public class TIEFighter extends GameItem {
 			}
 		}
 	}
+
+	public int getHealth(){
+		return health;
+	}
 }

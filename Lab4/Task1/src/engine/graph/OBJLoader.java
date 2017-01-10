@@ -51,15 +51,13 @@ public class OBJLoader {
                     break;
             }
         }
-        Mesh mesh = reorderLists(vertices, textures, normals, faces);
-        //mesh.setMaterial();
-        return mesh;
+        return reorderLists(vertices, textures, normals, faces);
     }
 
     private static Mesh reorderLists(List<Vector3f> posList, List<Vector2f> textCoordList,
             List<Vector3f> normList, List<Face> facesList) {
 
-        List<Integer> indices = new ArrayList();
+        List<Integer> indices = new ArrayList<>();
         // Create position array in the order it has been declared
         float[] posArr = new float[posList.size() * 3];
         int i = 0;
@@ -79,10 +77,8 @@ public class OBJLoader {
                         indices, textCoordArr, normArr);
             }
         }
-        int[] indicesArr = new int[indices.size()];
-        indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
-        Mesh mesh = new Mesh(posArr, textCoordArr, normArr, indicesArr);
-        return mesh;
+        int[]indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
+        return new Mesh(posArr, textCoordArr, normArr, indicesArr);
     }
 
     private static void processFaceVertex(IdxGroup indices, List<Vector2f> textCoordList,
@@ -138,22 +134,22 @@ public class OBJLoader {
             return idxGroup;
         }
 
-        public IdxGroup[] getFaceVertexIndices() {
+        IdxGroup[] getFaceVertexIndices() {
             return idxGroups;
         }
     }
 
-    protected static class IdxGroup {
+    static class IdxGroup {
 
-        public static final int NO_VALUE = -1;
+        static final int NO_VALUE = -1;
 
-        public int idxPos;
+        int idxPos;
 
-        public int idxTextCoord;
+        int idxTextCoord;
 
-        public int idxVecNormal;
+        int idxVecNormal;
 
-        public IdxGroup() {
+        IdxGroup() {
             idxPos = NO_VALUE;
             idxTextCoord = NO_VALUE;
             idxVecNormal = NO_VALUE;

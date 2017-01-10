@@ -4,7 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import engine.entity.GameItem;
 
-public class Transformation {
+class Transformation {
 
     private final Matrix4f projectionMatrix;
     private final Matrix4f modelMatrix;
@@ -13,7 +13,7 @@ public class Transformation {
     private final Matrix4f orthoMatrix;
     private final Matrix4f orthoModelMatrix;
 
-    public Transformation() {
+    Transformation() {
         projectionMatrix = new Matrix4f();
         modelMatrix = new Matrix4f();
         modelViewMatrix = new Matrix4f();
@@ -22,22 +22,22 @@ public class Transformation {
         orthoModelMatrix = new Matrix4f();
     }
 
-    public Matrix4f getProjectionMatrix() {
+    Matrix4f getProjectionMatrix() {
         return projectionMatrix;
     }
     
-    public Matrix4f updateProjectionMatrix(float fov, float width, float height, float zNear, float zFar) {
+    Matrix4f updateProjectionMatrix(float fov, float width, float height, float zNear, float zFar) {
         float aspectRatio = width / height;        
         projectionMatrix.identity();
         projectionMatrix.perspective(fov, aspectRatio, zNear, zFar);
         return projectionMatrix;
     }
 
-    public Matrix4f getViewMatrix() {
+    Matrix4f getViewMatrix() {
         return viewMatrix;
     }
     
-    public Matrix4f updateViewMatrix(Camera camera) {
+    Matrix4f updateViewMatrix(Camera camera) {
         Vector3f cameraPos = camera.getPosition();
         Vector3f rotation = camera.getRotation();
         
@@ -50,13 +50,13 @@ public class Transformation {
         return viewMatrix;
     }
 
-    public final Matrix4f getOrthoProjectionMatrix(float left, float right, float bottom, float top) {
+    final Matrix4f getOrthoProjectionMatrix(float left, float right, float bottom, float top) {
         orthoMatrix.identity();
         orthoMatrix.setOrtho2D(left, right, bottom, top);
         return orthoMatrix;
     }
     
-    public Matrix4f buildModelViewMatrix(GameItem gameItem, Matrix4f viewMatrix) {
+    Matrix4f buildModelViewMatrix(GameItem gameItem, Matrix4f viewMatrix) {
         Vector3f rotation = gameItem.getRotation();
         modelMatrix.identity().translate(gameItem.getPosition()).
                 rotateX((float)Math.toRadians(-rotation.x)).
@@ -67,7 +67,7 @@ public class Transformation {
         return modelViewMatrix.mul(modelMatrix);
     }
 
-    public Matrix4f buildOrtoProjModelMatrix(GameItem gameItem, Matrix4f orthoMatrix) {
+    Matrix4f buildOrtoProjModelMatrix(GameItem gameItem, Matrix4f orthoMatrix) {
         Vector3f rotation = gameItem.getRotation();
         modelMatrix.identity().translate(gameItem.getPosition()).
                 rotateX((float) Math.toRadians(-rotation.x)).

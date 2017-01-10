@@ -15,9 +15,6 @@ public class Window {
     private int width;
     private int height;
     private long windowHandle;
-    private GLFWErrorCallback errorCallback;
-    private GLFWKeyCallback keyCallback;
-    private GLFWWindowSizeCallback windowSizeCallback;
     private boolean resized;
     private boolean vSync;
 
@@ -32,6 +29,7 @@ public class Window {
     public void init() {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
+        GLFWErrorCallback errorCallback;
         glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
@@ -54,6 +52,7 @@ public class Window {
         }
 
         // Setup resize callback
+        GLFWWindowSizeCallback windowSizeCallback;
         glfwSetWindowSizeCallback(windowHandle, windowSizeCallback = new GLFWWindowSizeCallback() {
             @Override
             public void invoke(long window, int width, int height) {
@@ -64,6 +63,7 @@ public class Window {
         });
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+        GLFWKeyCallback keyCallback;
         glfwSetKeyCallback(windowHandle, keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
@@ -108,24 +108,12 @@ public class Window {
         glCullFace(GL_BACK);
     }
 
-    public long getWindowHandle() {
-        return windowHandle;
-    }
-
-    public void setClearColor(float r, float g, float b, float alpha) {
-        glClearColor(r, g, b, alpha);
-    }
-
     public boolean isKeyPressed(int keyCode) {
         return glfwGetKey(windowHandle, keyCode) == GLFW_PRESS;
     }
 
     public boolean windowShouldClose() {
         return glfwWindowShouldClose(windowHandle);
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public int getWidth() {
@@ -146,10 +134,6 @@ public class Window {
 
     public boolean isvSync() {
         return vSync;
-    }
-
-    public void setvSync(boolean vSync) {
-        this.vSync = vSync;
     }
 
     public void update() {

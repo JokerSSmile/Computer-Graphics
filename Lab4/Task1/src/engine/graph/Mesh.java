@@ -25,7 +25,7 @@ public class Mesh {
 
     public Mesh(float[] positions, float[] textCoords, float[] normals, int[] indices) {
         vertexCount = indices.length;
-        vboIdList = new ArrayList();
+        vboIdList = new ArrayList<>();
 
         vaoId = glGenVertexArrays();
         glBindVertexArray(vaoId);
@@ -77,11 +77,11 @@ public class Mesh {
         this.material = material;
     }
 
-    public int getVaoId() {
+    private int getVaoId() {
         return vaoId;
     }
 
-    public int getVertexCount() {
+    private int getVertexCount() {
         return vertexCount;
     }
 
@@ -111,7 +111,7 @@ public class Mesh {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    public void render() {
+    void render() {
         initRender();
         
         glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
@@ -119,7 +119,7 @@ public class Mesh {
         endRender();
     }
     
-    public void renderList(List<GameItem> gameItems, Consumer<GameItem> consumer) {
+    void renderList(List<GameItem> gameItems, Consumer<GameItem> consumer) {
         initRender();
         
         for (GameItem gameItem : gameItems) {

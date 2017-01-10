@@ -2,25 +2,25 @@ package engine.graph;
 
 import java.nio.FloatBuffer;
 
-public class UniformData {
+class UniformData {
 
     private final int uniformLocation;
     
     private FloatBuffer floatBuffer;
     
-    public UniformData(int uniformLocation) {
+    UniformData(int uniformLocation) {
         this.uniformLocation = uniformLocation;
     }
 
-    public int getUniformLocation() {
+    int getUniformLocation() {
         return uniformLocation;
     }
 
-    public FloatBuffer getFloatBuffer() {
+    FloatBuffer getFloatBuffer() {
         return floatBuffer;
     }
 
-    public void setFloatBuffer(FloatBuffer floatBuffer) {
+    void setFloatBuffer(FloatBuffer floatBuffer) {
         this.floatBuffer = floatBuffer;
     }
 }

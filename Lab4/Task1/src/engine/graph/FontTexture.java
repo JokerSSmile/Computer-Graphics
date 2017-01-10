@@ -107,7 +107,7 @@ public class FontTexture {
 
         private final int width;
 
-        public CharInfo(int startX, int width) {
+        CharInfo(int startX, int width) {
             this.startX = startX;
             this.width = width;
         }
