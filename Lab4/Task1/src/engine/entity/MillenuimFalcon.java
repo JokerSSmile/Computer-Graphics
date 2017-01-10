@@ -41,6 +41,8 @@ public class MillenuimFalcon extends GameItem {
 			Vector3f bulletPos = new Vector3f(getPosition().x, getPosition().y, getPosition().z - 6);
 			Bullet bullet = new Bullet(bulletPos, false);
 			scene.addGameItem(bullet);
+
+
 		}
 
 	}

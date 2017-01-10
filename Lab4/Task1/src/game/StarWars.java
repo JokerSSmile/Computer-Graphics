@@ -3,13 +3,10 @@ package game;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import engine.entity.*;
 import engine.graph.Renderer;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
-import static org.lwjgl.glfw.GLFW.*;
 
 import engine.IGameLogic;
 import engine.MouseInput;
@@ -24,9 +21,6 @@ import engine.graph.OBJLoader;
 
 public class StarWars implements IGameLogic {
 
-    private static final float MOUSE_SENSITIVITY = 0.2f;
-
-    private final Vector3f cameraInc;
     private final Renderer renderer;
     private final Camera camera;
     private Scene scene;
@@ -34,12 +28,9 @@ public class StarWars implements IGameLogic {
     private int score;
     private boolean isGameEnd;
 
-    private static final float CAMERA_POS_STEP = 0.05f;
-
     public StarWars() {
         renderer = new Renderer();
         camera = new Camera();
-        cameraInc = new Vector3f(0.0f, 0.0f, 0.0f);
     }
 
     @Override
@@ -74,8 +65,6 @@ public class StarWars implements IGameLogic {
         SkyBox skyBox = new SkyBox("src/resources/models/skybox.obj", "src/resources/textures/skybox1.png");
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
-
-        System.out.println(skyBox.getPosition());
         
         // Setup Lights
         setupLights();
@@ -129,23 +118,7 @@ public class StarWars implements IGameLogic {
     }
 
     @Override
-    public void input(Window window, MouseInput mouseInput) {
-        cameraInc.set(0, 0, 0);
-        if (window.isKeyPressed(GLFW_KEY_W)) {
-            cameraInc.z = -50;
-        } else if (window.isKeyPressed(GLFW_KEY_S)) {
-            //cameraInc.z = 50;
-        }
-        if (window.isKeyPressed(GLFW_KEY_A)) {
-            cameraInc.x = -50;
-        } else if (window.isKeyPressed(GLFW_KEY_D)) {
-            cameraInc.x = 50;
-        }
-        if (window.isKeyPressed(GLFW_KEY_Z)) {
-            cameraInc.y = -50;
-        } else if (window.isKeyPressed(GLFW_KEY_X)) {
-            cameraInc.y = 50;
-        }
+    public void input(Window window) {
 
         //Player input
         TIEFighter player = null;
@@ -163,16 +136,7 @@ public class StarWars implements IGameLogic {
     }
 
     @Override
-    public void update(float interval, MouseInput mouseInput) {
-
-        // Update camera based on mouse            
-        if (mouseInput.isRightButtonPressed()) {
-            Vector2f rotVec = mouseInput.getDisplVec();
-            camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
-        }
-
-        // Update camera position
-        camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
+    public void update(float interval) {
 
         //Update scene
         scene.update();
@@ -190,6 +154,8 @@ public class StarWars implements IGameLogic {
             hud.setResultText("Your score is " + Integer.toString(score));
             hud.setStatusText("");
         }
+
+
     }
 
     private void updateItems(){
