@@ -51,7 +51,9 @@ public class OBJLoader {
                     break;
             }
         }
-        return reorderLists(vertices, textures, normals, faces);
+        Mesh mesh = reorderLists(vertices, textures, normals, faces);
+        //mesh.setMaterial();
+        return mesh;
     }
 
     private static Mesh reorderLists(List<Vector3f> posList, List<Vector2f> textCoordList,
@@ -108,9 +110,6 @@ public class OBJLoader {
 
     protected static class Face {
 
-        /**
-         * List of idxGroup groups for a face triangle (3 vertices per face).
-         */
         private IdxGroup[] idxGroups = new IdxGroup[3];
 
         public Face(String v1, String v2, String v3) {

@@ -1,18 +1,13 @@
 package game;
 
 import java.awt.Font;
-import java.util.List;
 
-import engine.Scene;
 import org.joml.Vector3f;
 import engine.entity.GameItem;
 import engine.IHud;
 import engine.entity.TextItem;
 import engine.Window;
 import engine.graph.FontTexture;
-import engine.graph.Material;
-import engine.graph.Mesh;
-import engine.graph.OBJLoader;
 
 public class Hud implements IHud {
 
@@ -20,19 +15,27 @@ public class Hud implements IHud {
     private static final String CHARSET = "ISO-8859-1";
 
     private final GameItem[] gameItems;
-    private final TextItem statusTextItem;
+    private final TextItem scoreTextItem;
+    private final TextItem resultTextItem;
 
-    public Hud(String statusText) throws Exception {
+    Hud(String statusText, String resultText) throws Exception {
         FontTexture fontTexture = new FontTexture(FONT, CHARSET);
-        this.statusTextItem = new TextItem(statusText, fontTexture);
-        this.statusTextItem.getMesh().getMaterial().setColour(new Vector3f(1, 1, 1));
+        scoreTextItem = new TextItem(statusText, fontTexture);
+        scoreTextItem.getMesh().getMaterial().setColour(new Vector3f(1, 1, 1));
+        resultTextItem = new TextItem(resultText, fontTexture);
+        resultTextItem.getMesh().getMaterial().setColour(new Vector3f(1, 1, 1));
+        resultTextItem.setScale(1.5f);
 
         // Create list that holds the items that compose the HUD
-        gameItems = new GameItem[]{statusTextItem};
+        gameItems = new GameItem[]{scoreTextItem, resultTextItem};
     }
 
-    public void setStatusText(String statusText) {
-        this.statusTextItem.setText(statusText);
+    void setStatusText(String statusText) {
+        scoreTextItem.setText(statusText);
+    }
+
+    void setResultText(String resultText){
+        resultTextItem.setText(resultText);
     }
 
     @Override
@@ -40,7 +43,8 @@ public class Hud implements IHud {
         return gameItems;
     }
    
-    public void updateSize(Window window) {
-        this.statusTextItem.setPosition(10f, window.getHeight() - 50f, 0);
+    void updateSize(Window window) {
+        this.scoreTextItem.setPosition(10f, window.getHeight() - 50f, 0);
+        this.resultTextItem.setPosition(window.getWidth() / 2 - 100, window.getHeight() / 2, 0);
     }
 }

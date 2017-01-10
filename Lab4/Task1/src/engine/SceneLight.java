@@ -8,11 +8,8 @@ import engine.graph.SpotLight;
 public class SceneLight {
 
     private Vector3f ambientLight;
-    
     private PointLight[] pointLightList;
-    
     private SpotLight[] spotLightList;
-    
     private DirectionalLight directionalLight;
 
     public Vector3f getAmbientLight() {

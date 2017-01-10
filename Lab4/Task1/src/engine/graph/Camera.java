@@ -15,11 +15,6 @@ public class Camera {
         rotation = new Vector3f(CAMERA_INIT_ROTATION.x, CAMERA_INIT_ROTATION.y, CAMERA_INIT_ROTATION.z);
 
     }
-    
-    //public Camera(Vector3f position, Vector3f rotation) {
-    //    this.position = position;
-    //    this.rotation = rotation;
-    //}
 
     public Vector3f getPosition() {
         return position;

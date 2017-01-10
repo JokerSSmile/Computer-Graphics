@@ -21,21 +21,6 @@ public class Scene {
         return meshMap;
     }
 
-    public void setGameItems(List<GameItem> gameItems) {
-        //this.gameItems = gameItems;
-        //bullets = new Vector<>();
-        for (GameItem gameItem : gameItems) {
-            this.gameItems.add(gameItem);
-            Mesh mesh = gameItem.getMesh();
-            List<GameItem> list = meshMap.get(mesh);
-            if (list == null) {
-                list = new ArrayList<>();
-                meshMap.put(mesh, list);
-            }
-            list.add(gameItem);
-        }
-    }
-
     public void addGameItem(GameItem gameItem){
 
         gameItems.add(gameItem);
@@ -50,6 +35,8 @@ public class Scene {
             List<GameItem> list = entry.getValue();
             list.removeIf(GameItem::isNeedToRemove);
         }
+
+        sceneLight.getClass();
     }
 
     public SkyBox getSkyBox() {

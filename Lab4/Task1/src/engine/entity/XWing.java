@@ -1,9 +1,7 @@
 package engine.entity;
 
 import engine.Scene;
-import engine.Window;
 import engine.graph.Mesh;
-import javafx.geometry.Rectangle2D;
 import org.joml.Vector2i;
 
 import java.util.List;

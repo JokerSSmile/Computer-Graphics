@@ -12,11 +12,8 @@ import engine.graph.Mesh;
 public class TextItem extends GameItem {
 
     private static final float ZPOS = 0.0f;
-
     private static final int VERTICES_PER_QUAD = 4;
-
     private final FontTexture fontTexture;
-    
     private String text;
 
     public TextItem(String text, FontTexture fontTexture) throws Exception {
@@ -96,7 +93,6 @@ public class TextItem extends GameItem {
         this.getMesh().deleteBuffers();
         this.setMesh(buildMesh());
     }
-
 
     @Override
     public void update(float interval, Scene scene) {

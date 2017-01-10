@@ -118,9 +118,9 @@ public class Renderer {
         skyBoxShaderProgram.setUniform("projectionMatrix", projectionMatrix);
         SkyBox skyBox = scene.getSkyBox();
         Matrix4f viewMatrix = transformation.getViewMatrix();
-        viewMatrix.m30(0);
-        viewMatrix.m31(0);
-        viewMatrix.m32(0);
+        //viewMatrix.m30(0);
+        //viewMatrix.m31(0);
+        //viewMatrix.m32(0);
         Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(skyBox, viewMatrix);
         skyBoxShaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
         skyBoxShaderProgram.setUniform("ambientLight", scene.getSceneLight().getAmbientLight());
@@ -173,7 +173,7 @@ public class Renderer {
             lightPos.x = aux.x;
             lightPos.y = aux.y;
             lightPos.z = aux.z;
-            sceneShaderProgram.setUniform("pointLights", currPointLight, i);
+            //sceneShaderProgram.setUniform("pointLights", currPointLight, i);
         }
 
         // Process Spot Ligths

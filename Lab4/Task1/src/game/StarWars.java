@@ -32,6 +32,7 @@ public class StarWars implements IGameLogic {
     private Scene scene;
     private Hud hud;
     private int score;
+    private boolean isGameEnd;
 
     private static final float CAMERA_POS_STEP = 0.05f;
 
@@ -50,57 +51,68 @@ public class StarWars implements IGameLogic {
         // Setup  GameItems
         float reflectance = 1f;
         Mesh tieFighterMesh = OBJLoader.loadMesh("src/resources/models/TIE-fighter1.obj");
-        Mesh xWingMesh = OBJLoader.loadMesh("src/resources/models/X-wing1.obj");
-        Mesh mFalconMesh = OBJLoader.loadMesh("src/resources/models/MILLENIUM-falcon.obj");
+        Mesh deathStarMesh = OBJLoader.loadMesh("src/resources/models/deathstar.obj");
         Material darkMaterial = new Material(new Vector3f(0.2f, 0.2f, 0.2f), reflectance);
-        Material lightMaterial = new Material(new Vector3f(0.5f, 0.5f, 0.5f), reflectance);
         tieFighterMesh.setMaterial(darkMaterial);
-        xWingMesh.setMaterial(lightMaterial);
-        mFalconMesh.setMaterial(lightMaterial);
         
         float blockScale = 0.5f;
         float extension = 2.0f;
 
+        //Init Death Star
+        DeathStar deathStar = new DeathStar(deathStarMesh);
+
         //Initialize player
         TIEFighter tieFighter = new TIEFighter(tieFighterMesh);
-        tieFighter.setScale(1f);
 
         //Fill game items array
-        List<GameItem> gameItems = new Vector<>();
-        gameItems.add(tieFighter);
-        int enemyRows = 4;
-        int enemyColumns = 6;
-        for (int i = 0; i < enemyColumns; i++) {
-            for (int k = 0; k < enemyRows; k++) {
-                if (k != 0) {
-                    XWing xWing = new XWing(xWingMesh);
-                    xWing.setPosition(i * 32 - 100, -5, k * 40 - 250);
-                    gameItems.add(xWing);
-                } else {
-                    MillenuimFalcon mFalcon = new MillenuimFalcon(mFalconMesh);
-                    mFalcon.setPosition(i * 32 - 100, -5, k * 40 - 250);
-                    gameItems.add(mFalcon);
-                }
-            }
-        }
-
-        scene.setGameItems(gameItems);
+        scene.addGameItem(tieFighter);
+        scene.addGameItem(deathStar);
+        initializeEnemies();
 
         // Setup  SkyBox
-        float skyBoxScale = 600.0f;
-        SkyBox skyBox = new SkyBox("src/resources/models/skybox.obj", "src/resources/textures/4.png");
+        float skyBoxScale = 500f;
+        SkyBox skyBox = new SkyBox("src/resources/models/skybox.obj", "src/resources/textures/skybox1.png");
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
+
+        System.out.println(skyBox.getPosition());
         
         // Setup Lights
         setupLights();
         
         // Create HUD
-        hud = new Hud(Integer.toString(score));
+        hud = new Hud(Integer.toString(score), "");
     }
 
     private void initializeEnemies(){
 
+        float reflectance = 1f;
+
+        try {
+            Mesh xWingMesh = OBJLoader.loadMesh("src/resources/models/X-wing1.obj");
+            Mesh mFalconMesh = OBJLoader.loadMesh("src/resources/models/MILLENIUM-falcon.obj");
+            Material lightMaterial = new Material(new Vector3f(0.5f, 0.5f, 0.5f), reflectance);
+            xWingMesh.setMaterial(lightMaterial);
+            mFalconMesh.setMaterial(lightMaterial);
+
+            int enemyRows = 4;
+            int enemyColumns = 6;
+            for (int i = 0; i < enemyColumns; i++) {
+                for (int k = 0; k < enemyRows; k++) {
+                    if (k != 0) {
+                        XWing xWing = new XWing(xWingMesh);
+                        xWing.setPosition(i * 32 - 100, -5, k * 40 - 250);
+                        scene.addGameItem(xWing);
+                    } else {
+                        MillenuimFalcon mFalcon = new MillenuimFalcon(mFalconMesh);
+                        mFalcon.setPosition(i * 32 - 100, -5, k * 40 - 250);
+                        scene.addGameItem(mFalcon);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error while initialize enemies");
+        }
     }
     
     private void setupLights() {
@@ -122,7 +134,7 @@ public class StarWars implements IGameLogic {
         if (window.isKeyPressed(GLFW_KEY_W)) {
             cameraInc.z = -50;
         } else if (window.isKeyPressed(GLFW_KEY_S)) {
-            cameraInc.z = 50;
+            //cameraInc.z = 50;
         }
         if (window.isKeyPressed(GLFW_KEY_A)) {
             cameraInc.x = -50;
@@ -143,8 +155,11 @@ public class StarWars implements IGameLogic {
                 break;
             }
         }
-        assert player != null;
-        player.input(window, scene);
+        if (player != null) {
+            player.input(window, scene);
+        } else {
+            isGameEnd = true;
+        }
     }
 
     @Override
@@ -167,13 +182,28 @@ public class StarWars implements IGameLogic {
             GameItem currElement = scene.getGameItems().get(i);
             currElement.update(interval, scene);
         }
+        updateItems();
 
+        //Update hud
+        hud.setStatusText( "Score: " + Integer.toString(score));
+        if (isGameEnd){
+            hud.setResultText("Your score is " + Integer.toString(score));
+            hud.setStatusText("");
+        }
+    }
+
+    private void updateItems(){
+
+        int enemiesLeft = 0;
         Iterator<GameItem> it = scene.getGameItems().iterator();
         while (it.hasNext()){
             GameItem item = it.next();
+            if (item.getClass() == XWing.class || item.getClass() == MillenuimFalcon.class){
+                enemiesLeft++;
+            }
             if (item.getClass() == Bullet.class) {
                 for (GameItem item_ : scene.getGameItems()) {
-                    if (item.isCollision(item_) && item_ != item) {
+                    if (item.isCollision(item_) && item_ != item && item_.getClass() != DeathStar.class) {
                         if (item_.getClass() != TIEFighter.class && ((Bullet)item).isPlayers()){
                             score += 10;
                         }
@@ -190,8 +220,9 @@ public class StarWars implements IGameLogic {
             }
         }
 
-        //Update hud
-        hud.setStatusText(Integer.toString(score));
+        if (enemiesLeft == 0){
+            initializeEnemies();
+        }
     }
 
     @Override

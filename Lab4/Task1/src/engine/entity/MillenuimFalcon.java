@@ -5,12 +5,12 @@ import engine.graph.Mesh;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 
-import java.util.List;
 import java.util.Random;
 
 public class MillenuimFalcon extends GameItem {
 
 	private static final float ONE_SIDE_MOVE_TIME = 4;
+	private static final float SHOOT_CHANCE = 0.995f;
 
 	private float oneSideMoveTime;
 
@@ -36,7 +36,7 @@ public class MillenuimFalcon extends GameItem {
 		Random r = new Random(System.nanoTime());
 		float rand = r.nextFloat();
 
-		if (rand > 0.996){
+		if (rand > SHOOT_CHANCE){
 
 			Vector3f bulletPos = new Vector3f(getPosition().x, getPosition().y, getPosition().z - 6);
 			Bullet bullet = new Bullet(bulletPos, false);

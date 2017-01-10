@@ -18,17 +18,11 @@ import javax.imageio.ImageIO;
 public class FontTexture {
 
     private static final String IMAGE_FORMAT = "png";
-
     private final Font font;
-
     private final String charSetName;
-
     private final Map<Character, CharInfo> charMap;
-
     private Texture texture;
-
     private int height;
-
     private int width;
 
     public FontTexture(Font font, String charSetName) throws Exception {

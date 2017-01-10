@@ -1,25 +1,21 @@
 package engine.entity;
 
 import engine.Scene;
-import engine.Window;
-import javafx.geometry.Rectangle2D;
-import org.joml.Vector2d;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import engine.graph.Mesh;
 
 import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 public abstract class GameItem {
 
     protected Mesh mesh;
     protected Vector3f position;
-    protected float scale;
-    protected Vector3f rotation;
-    protected boolean isAlive;
     protected Vector2i size;
+    private float scale;
+    private Vector3f rotation;
+    boolean isAlive;
+
 
     public GameItem() {
         position = new Vector3f(0, 0, 0);
@@ -55,7 +51,7 @@ public abstract class GameItem {
         return rotation;
     }
 
-    public void setRotation(float x, float y, float z) {
+    void setRotation(float x, float y, float z) {
         rotation.x = x;
         rotation.y = y;
         rotation.z = z;

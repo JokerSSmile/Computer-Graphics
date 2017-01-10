@@ -1,7 +1,6 @@
 package engine.entity;
 
 import engine.Scene;
-import engine.Window;
 import engine.graph.Material;
 import engine.graph.Mesh;
 import engine.graph.OBJLoader;

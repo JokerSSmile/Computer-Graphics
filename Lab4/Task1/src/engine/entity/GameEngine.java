@@ -7,8 +7,8 @@ import engine.Window;
 
 public class GameEngine implements Runnable {
 
-    public static final int TARGET_FPS = 75;
-    public static final int TARGET_UPS = 30;
+    private static final int TARGET_FPS = 75;
+    private static final int TARGET_UPS = 30;
     private final Window window;
     private final Thread gameLoopThread;
     private final Timer timer;
@@ -44,14 +44,14 @@ public class GameEngine implements Runnable {
         }
     }
 
-    protected void init() throws Exception {
+    private void init() throws Exception {
         window.init();
         timer.init();
         mouseInput.init(window);
         gameLogic.init(window);
     }
 
-    protected void gameLoop() {
+    private void gameLoop() {
         float elapsedTime;
         float accumulator = 0f;
         float interval = 1f / TARGET_UPS;
@@ -76,7 +76,7 @@ public class GameEngine implements Runnable {
         }
     }
 
-    protected void cleanup() {
+    private void cleanup() {
         gameLogic.cleanup();                
     }
     
@@ -86,12 +86,12 @@ public class GameEngine implements Runnable {
         while (timer.getTime() < endTime) {
             try {
                 Thread.sleep(1);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ignored) {
             }
         }
     }
 
-    protected void input() {
+    private void input() {
         mouseInput.input(window);
         gameLogic.input(window, mouseInput);
     }
@@ -100,7 +100,7 @@ public class GameEngine implements Runnable {
         gameLogic.update(interval, mouseInput);
     }
 
-    protected void render() {
+    private void render() {
         gameLogic.render(window);
         window.update();
     }
