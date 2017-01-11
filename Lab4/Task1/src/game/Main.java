@@ -5,7 +5,7 @@ import org.joml.Vector2i;
 
 public class Main {
 
-    private static final String TITLE = "GAME";
+    private static final String TITLE = "Убивать всех повстанцев!";
     private static final Vector2i WINDOW_SIZE = new Vector2i(1280, 720);
  
     public static void main(String[] args) {
